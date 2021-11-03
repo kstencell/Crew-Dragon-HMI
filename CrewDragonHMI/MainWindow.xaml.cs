@@ -24,5 +24,15 @@ namespace CrewDragonHMI
         {
             InitializeComponent();
         }
+
+        private void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }
