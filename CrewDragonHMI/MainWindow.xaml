@@ -7,21 +7,19 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <ProgressBar HorizontalAlignment="Left" Height="43" Margin="113,203,0,0" VerticalAlignment="Top" Width="196" RenderTransformOrigin="0.5,0.5">
+        <ProgressBar Name="BatteryIndicator" HorizontalAlignment="Left" Height="43" Margin="113,203,0,0" VerticalAlignment="Top" Width="196" RenderTransformOrigin="0.5,0.5" Minimum="0" Maximum="100" ValueChanged="BatteryIndicator_ValueChanged">
             <ProgressBar.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="90.585"/>
-                    <TranslateTransform/>
+                    <SkewTransform AngleY="0"/>
+                    <RotateTransform Angle="-90.76"/>
+                    <TranslateTransform X="0"/>
                 </TransformGroup>
             </ProgressBar.RenderTransform>
         </ProgressBar>
-        <TextBox HorizontalAlignment="Left" Margin="159,371,0,0" Text="Battery" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="TextBox_TextChanged"/>
-        <TextBox HorizontalAlignment="Left" Margin="356,371,0,0" Text="Battery" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="TextBox_TextChanged"/>
-        <TextBox HorizontalAlignment="Left" Margin="565,371,0,0" Text="Battery" TextWrapping="Wrap" VerticalAlignment="Top" Width="111" TextChanged="TextBox_TextChanged"/>
-        <RadioButton Content="RadioButton" HorizontalAlignment="Center" Margin="0,198,0,0" VerticalAlignment="Top" Height="52"/>
-        <RadioButton Content="RadioButton" HorizontalAlignment="Left" Margin="578,198,0,0" VerticalAlignment="Top" Height="52"/>
+        <TextBox Name="BatteryIndicatorLabel" HorizontalAlignment="Left" Margin="159,371,0,0" Text="Battery:" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Border BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Left" Height="0" Margin="298,235,0,0" VerticalAlignment="Top" Width="60"/>
+        <CheckBox Name="GeneratorPower" Content="Generator Power" HorizontalAlignment="Center" Margin="0,205,0,0" VerticalAlignment="Top" Unchecked="GeneratorPower_Unchecked" Checked="GeneratorPower_Checked"/>
 
     </Grid>
 </Window>
