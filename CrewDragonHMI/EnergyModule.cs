@@ -8,19 +8,18 @@ using System.IO;
 
 namespace CrewDragonHMI
 {
-    public class EnergyModule
+    public static class EnergyModule
     {
 
         public static int batteryLevel;
         public static string batteryFilePath = "BatteryLevel.txt";
         public static bool generatorStatus;
+        public static bool shieldsStatus;
 
-        public EnergyModule ()
+        static EnergyModule ()
         {
-            batteryLevel = 50;
-            StreamReader batteryLevelStreamReader = new StreamReader(batteryFilePath);
-            batteryLevel = Int32.Parse(batteryLevelStreamReader.ReadLine());
-            batteryLevelStreamReader.Close();
+            setBatteryLevel(50);
+
         }
 
         public static int getBatteryLevel()
@@ -52,6 +51,24 @@ namespace CrewDragonHMI
             }
         }
 
+        public static bool getGeneratorStatus()
+        {
+            return generatorStatus;
+        }
 
+        public static void setGeneratorStatus(bool status)
+        {
+            generatorStatus = status;
+        }
+
+        public static bool getShieldStatus()
+        {
+            return shieldsStatus;
+        }
+
+        public static void setShieldStatus(bool status)
+        {
+            shieldsStatus = generatorStatus;
+        }
     }
 }

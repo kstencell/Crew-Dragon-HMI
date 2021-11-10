@@ -94,5 +94,15 @@ namespace CrewDragonHMI
                 generatorIndicatorBackgroundWorker.CancelAsync();
             }
         }
+
+        private void BatteryIndicatorLabel_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }
