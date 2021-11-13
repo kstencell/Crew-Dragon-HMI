@@ -23,37 +23,57 @@ namespace CrewDragonHMI
     public partial class MainWindow : Window
     {
         BackgroundWorker fuelIndicatorBackgroundWorker = new BackgroundWorker();
+        BackgroundWorker speedIndicatorBackgroundWorker = new BackgroundWorker();
         public MainWindow()
         {
             InitializeComponent();
             InitializeFuelIndicatorBackgroundWorker();
+            InitializeSpeedIndicatorBackgroundWorker();
         }
 
         private void InitializeFuelIndicatorBackgroundWorker()
         {
             fuelIndicatorBackgroundWorker.WorkerReportsProgress = true;
-            fuelIndicatorBackgroundWorker.DoWork += FuelBackgroundWorker_DoWork;
-            fuelIndicatorBackgroundWorker.ProgressChanged += FuelBackgroundWorker_ProgressChanged;
+            fuelIndicatorBackgroundWorker.DoWork += FuelIndicatorBackgroundWorker_DoWork;
+            fuelIndicatorBackgroundWorker.ProgressChanged += FuelIndicatorBackgroundWorker_ProgressChanged;
             fuelIndicatorBackgroundWorker.RunWorkerAsync();
         }
 
-        private void FuelBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        private void FuelIndicatorBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             while (true)
             {
                 int fuelLevel = MovementModule.getFuelLevel();
                 fuelIndicatorBackgroundWorker.ReportProgress(fuelLevel);
-                System.Threading.Thread.Sleep(1000);
+                Thread.Sleep(1000);
             }
         }
-        private void FuelBackgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        private void FuelIndicatorBackgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             FuelIndicator.Value = e.ProgressPercentage;
         }
 
-        private void Fuel_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void InitializeSpeedIndicatorBackgroundWorker()
         {
+            speedIndicatorBackgroundWorker.WorkerReportsProgress = true;
+            speedIndicatorBackgroundWorker.DoWork += SpeedIndicatorBackgroundWorker_DoWork;
+            speedIndicatorBackgroundWorker.ProgressChanged += SpeedIndicatorBackgroundWorker_ProgressChanged;
+            speedIndicatorBackgroundWorker.RunWorkerAsync();
+        }
 
+        private void SpeedIndicatorBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while (true)
+            {
+                int speed = MovementModule.getSpeed();
+                speedIndicatorBackgroundWorker.ReportProgress(speed);
+                Thread.Sleep(1000);
+            }
+        }
+
+        private void SpeedIndicatorBackgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            SpeedIndicator.Value = e.ProgressPercentage;
         }
     }
 }

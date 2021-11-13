@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <ProgressBar x:Name="FuelIndicator" RenderTransformOrigin="0.5,0.5" Minimum="0" Maximum="100" ValueChanged="Fuel_ValueChanged" Margin="558,167,-77,183">
+        <ProgressBar x:Name="FuelIndicator" RenderTransformOrigin="0.5,0.5" Minimum="0" Maximum="100" Margin="558,167,-77,183">
             <ProgressBar.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleX="1" ScaleY="1"/>
@@ -18,5 +18,9 @@
         </ProgressBar>
         <Label Content="F" HorizontalAlignment="Left" Margin="643,35,0,0" VerticalAlignment="Top" Height="53" Width="24" FontSize="36"/>
         <Label Content="E" HorizontalAlignment="Left" Margin="643,298,0,0" VerticalAlignment="Top" Height="53" Width="24" FontSize="36"/>
+        <ProgressBar x:Name="SpeedIndicator" HorizontalAlignment="Left" Height="51" Margin="52,300,0,0" VerticalAlignment="Top" Width="265"/>
+        <Label Content="0" HorizontalAlignment="Left" Margin="52,356,0,0" VerticalAlignment="Top"/>
+        <Label Content="26 000" HorizontalAlignment="Left" Margin="162,356,0,0" VerticalAlignment="Top"/>
+        <Label Content="52 000" HorizontalAlignment="Left" Margin="271,356,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

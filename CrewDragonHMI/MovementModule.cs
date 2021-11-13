@@ -10,12 +10,13 @@ namespace CrewDragonHMI
 {
     public static class MovementModule
     {
-        public static int fuelLevel;
-        public static string fuelFilePath = "FuelLevel.txt";
+        public static int fuelLevel, speed;
+        public static string fuelFilePath = "FuelLevel.txt", speedFilePath = "Speed.txt";
 
         static MovementModule()
         {
             setFuelLevel(100);
+            setSpeed(0);
         }
 
         public static int getFuelLevel()
@@ -41,6 +42,38 @@ namespace CrewDragonHMI
             {
                 StreamWriter fileStream = new StreamWriter(fuelFilePath);
                 fileStream.WriteLine((fuelLevel).ToString());
+                fileStream.Close();
+            }
+
+            catch (IOException)
+            {
+                Thread.Sleep(50);
+            }
+        }
+
+        public static int getSpeed()
+        {
+            try
+            {
+                StreamReader speedStreamReader = new StreamReader(speedFilePath);
+                speed = Int32.Parse(speedStreamReader.ReadLine());
+                speedStreamReader.Close();
+            }
+
+            catch (IOException)
+            {
+                Thread.Sleep(50);
+            }
+
+            return speed;
+        }
+
+        public static void setSpeed(int speed)
+        {
+            try
+            {
+                StreamWriter fileStream = new StreamWriter(speedFilePath);
+                fileStream.WriteLine((speed).ToString());
                 fileStream.Close();
             }
 
