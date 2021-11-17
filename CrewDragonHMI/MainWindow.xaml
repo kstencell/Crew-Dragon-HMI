@@ -7,6 +7,53 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <TextBox Name="hullIntegrity" HorizontalAlignment="Left" Margin="104,127,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="63" Height="37"/>
+        <TextBox Name="rotationText" HorizontalAlignment="Left" Margin="265,94,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="55" Height="29"/>
+        <TextBox Name="speedText" HorizontalAlignment="Left" Margin="379,94,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="65" Height="29"/>
+        <Slider Name="rotationChanger" HorizontalAlignment="Left" Margin="274,93,0,0" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.5,0.5">
+            <Slider.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Slider.RenderTransform>
+        </Slider>
+        <Slider Name="speedChanger" HorizontalAlignment="Left" Margin="402,94,0,0" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.5,0.5">
+            <Slider.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Slider.RenderTransform>
+        </Slider>
+        <Button Name="generator" Content="Button" HorizontalAlignment="Left" Margin="539,99,0,0" VerticalAlignment="Top"/>
+        <ProgressBar Name="batteryLevel" HorizontalAlignment="Left" Height="10" Margin="625,102,0,0" VerticalAlignment="Top" Width="100" RenderTransformOrigin="0.5,0.5">
+            <ProgressBar.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </ProgressBar.RenderTransform>
+        </ProgressBar>
+        <ProgressBar Name="fuelLevel" HorizontalAlignment="Left" Height="10" Margin="626,300,0,0" VerticalAlignment="Top" Width="100" RenderTransformOrigin="0.5,0.5">
+            <ProgressBar.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </ProgressBar.RenderTransform>
+        </ProgressBar>
+        <Button Name="shields" Content="Button" HorizontalAlignment="Left" Margin="539,307,0,0" VerticalAlignment="Top"/>
+        <Button Name="warpDrive" Content="Button" HorizontalAlignment="Left" Margin="400,307,0,0" VerticalAlignment="Top"/>
+        <Button Name="alarm" Content="Button" HorizontalAlignment="Left" Margin="265,307,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>
