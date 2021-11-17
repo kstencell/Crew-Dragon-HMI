@@ -26,6 +26,7 @@ namespace CrewDragonHMI
 
         BackgroundWorker batteryIndicatorBackgroundWorker = new BackgroundWorker();
         BackgroundWorker generatorIndicatorBackgroundWorker = new BackgroundWorker();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -33,6 +34,9 @@ namespace CrewDragonHMI
             InitializeGeneratorIndicatorBackgroundWorker();
         }
 
+        /*******************************************/
+        /********** BATTERY WORKER *****************/
+        /*******************************************/
         private void InitializeBatteryIndicatorBackgroundWorker()
         {
             batteryIndicatorBackgroundWorker.WorkerReportsProgress = true;
@@ -57,10 +61,9 @@ namespace CrewDragonHMI
             BatteryIndicatorLabel.Text = "Battery Level: " + e.ProgressPercentage.ToString() + "%";
         }
 
-        private void BatteryIndicator_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-
-        }
+        /*******************************************/
+        /********** GENERATOR WORKER ***************/
+        /*******************************************/
 
         private void InitializeGeneratorIndicatorBackgroundWorker()
         {
@@ -73,8 +76,8 @@ namespace CrewDragonHMI
         {
             while (!generatorIndicatorBackgroundWorker.CancellationPending)
             {
-                System.Threading.Thread.Sleep(500);
-                EnergyModule.setBatteryLevel(EnergyModule.batteryLevel + 2);
+                EnergyModule.setBatteryLevel(EnergyModule.batteryLevel + 1);
+                System.Threading.Thread.Sleep(250);
             }
         }
 
@@ -93,16 +96,6 @@ namespace CrewDragonHMI
             {
                 generatorIndicatorBackgroundWorker.CancelAsync();
             }
-        }
-
-        private void BatteryIndicatorLabel_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
         }
     }
 }

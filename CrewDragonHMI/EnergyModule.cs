@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.IO;
+using System.ComponentModel;
 
 namespace CrewDragonHMI
 {
@@ -15,6 +16,7 @@ namespace CrewDragonHMI
         public static string batteryFilePath = "BatteryLevel.txt";
         public static bool generatorStatus;
         public static bool shieldsStatus;
+
 
         static EnergyModule ()
         {
