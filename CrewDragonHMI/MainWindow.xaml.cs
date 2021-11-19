@@ -43,15 +43,16 @@ namespace CrewDragonHMI
         // *********************************
         // Exterior Integrity Module Threads
         // *********************************
-        BackgroundWorker BW_hullIntegrity = new BackgroundWorker();
+        BackgroundWorker BW_hull = new BackgroundWorker();
+        BackgroundWorker BW_damage = new BackgroundWorker();
 
         public MainWindow()
         {
             InitializeComponent();
             InitializeEnergyModule();
             InitializeAlertModule();
-            InitializeExteriorIntegrityModule();
             InitializeMovementModule();
+            InitializeExteriorIntegrityModule();
         }
 
         /*******************************************/
@@ -120,6 +121,10 @@ namespace CrewDragonHMI
             }
         }
 
+        // *****************
+        // **** SHIELDS ****
+        // *****************
+
         private void shields_Checked(object sender, RoutedEventArgs e)
         {
             EnergyModule.setShields();
@@ -130,6 +135,7 @@ namespace CrewDragonHMI
             EnergyModule.setShields();
         }
 
+
         /*******************************************/
         /********** ALERT MODULE METHODS ***********/
         /*******************************************/
@@ -138,9 +144,6 @@ namespace CrewDragonHMI
         {
             // not sure if this needs a thread
         }
-
-
-
 
 
         /*******************************************/
@@ -159,11 +162,81 @@ namespace CrewDragonHMI
         // **** FUEL ****
         // **************
 
+        private void Fuel_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while (true)
+            {
+                int fuelLevel = MovementModule.getFuelLevel();
+                BW_fuel.ReportProgress(fuelLevel);
+                System.Threading.Thread.Sleep(1000);
+            }
+        }
+
+        private void Fuel_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            fuel.Value = e.ProgressPercentage;
+            fuelText.Text = "Fuel Level: " + e.ProgressPercentage.ToString() + "%";
+        }
+
+
+        // ***************
+        // **** SPEED ****
+        // ***************
+
         private void speedChanger_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             MovementModule.speed = e.NewValue;
             speedText.Text = e.NewValue + "km/s";
 
+        }
+
+
+        /*****************************************************/
+        /********* EXTERIOR INTEGRITY MODULE METHODS *********/
+        /*****************************************************/
+
+        private void InitializeExteriorIntegrityModule()
+        {
+            BW_hull.WorkerReportsProgress = true;
+            BW_hull.DoWork += Hull_DoWork;
+            BW_hull.ProgressChanged += Hull_ProgressChanged;
+            BW_hull.RunWorkerAsync();
+
+            BW_damage.WorkerReportsProgress = false;
+            BW_damage.WorkerSupportsCancellation = true;
+            BW_damage.DoWork += Damage_DoWork;
+        }
+
+        // ****************
+        // ***** HULL *****
+        // ****************
+
+        private void Hull_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while (true)
+            {
+                int hullIntegrity = ExteriorIntegrityModule.getHullIntegrity();
+                BW_hull.ReportProgress(hullIntegrity);
+                System.Threading.Thread.Sleep(250);
+            }
+        }
+        private void Hull_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            hullText.Text = "Hull Integrity: " + e.ProgressPercentage.ToString() + "%";
+        }
+
+        // ******************
+        // ***** DAMAGE *****
+        // ******************
+
+        private void Damage_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while (true)
+            {
+                float newHullIntegrity = ExteriorIntegrityModule.getHullIntegrity() - (0.01 * MovementModule.getSpeed());
+                ExteriorIntegrityModule.setHullIntegrity();
+                System.Threading.Thread.Sleep(1000);
+            }
         }
     }
 }
