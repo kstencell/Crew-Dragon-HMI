@@ -6,7 +6,16 @@ using System.Threading.Tasks;
 
 namespace CrewDragonHMI
 {
-    class MovementModule
+    static class MovementModule
     {
+        public static int FuelLevel { get; set; }
+        public static int Speed { get; set; }
+    
+        static MovementModule()
+        {
+            FuelLevel = 50;
+            Speed = 50;
+        }
+
     }
 }

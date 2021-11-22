@@ -6,7 +6,18 @@ using System.Threading.Tasks;
 
 namespace CrewDragonHMI
 {
-    class EnergyModule
+    static class EnergyModule
     {
+        public static int BatteryLevel { get; set; }
+
+        public static void SetShields()
+        {
+
+        }
+
+        static EnergyModule()
+        {
+            BatteryLevel = 50;
+        }
     }
 }
