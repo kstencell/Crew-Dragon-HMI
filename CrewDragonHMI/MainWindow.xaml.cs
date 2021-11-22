@@ -80,7 +80,7 @@ namespace CrewDragonHMI
         {
             while (true)
             {
-                int batteryLevel = EnergyModule.getBatteryLevel();
+                int batteryLevel = 50;
                 BW_battery.ReportProgress(batteryLevel);
                 System.Threading.Thread.Sleep(1000);
             }
@@ -100,7 +100,7 @@ namespace CrewDragonHMI
         {
             while (!BW_generator.CancellationPending)
             {
-                EnergyModule.setBatteryLevel(EnergyModule.batteryLevel + 1);
+                
                 System.Threading.Thread.Sleep(250);
             }
         }
@@ -127,12 +127,12 @@ namespace CrewDragonHMI
 
         private void shields_Checked(object sender, RoutedEventArgs e)
         {
-            EnergyModule.setShields();
+            
         }
 
         private void shields_Unchecked(object sender, RoutedEventArgs e)
         {
-            EnergyModule.setShields();
+            
         }
 
 
@@ -166,7 +166,7 @@ namespace CrewDragonHMI
         {
             while (true)
             {
-                int fuelLevel = MovementModule.getFuelLevel();
+                int fuelLevel = 50;
                 BW_fuel.ReportProgress(fuelLevel);
                 System.Threading.Thread.Sleep(1000);
             }
@@ -185,7 +185,6 @@ namespace CrewDragonHMI
 
         private void speedChanger_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            MovementModule.speed = e.NewValue;
             speedText.Text = e.NewValue + "km/s";
 
         }
@@ -215,7 +214,7 @@ namespace CrewDragonHMI
         {
             while (true)
             {
-                int hullIntegrity = ExteriorIntegrityModule.getHullIntegrity();
+                int hullIntegrity = 50;
                 BW_hull.ReportProgress(hullIntegrity);
                 System.Threading.Thread.Sleep(250);
             }
@@ -233,8 +232,7 @@ namespace CrewDragonHMI
         {
             while (true)
             {
-                float newHullIntegrity = ExteriorIntegrityModule.getHullIntegrity() - (0.01 * MovementModule.getSpeed());
-                ExteriorIntegrityModule.setHullIntegrity();
+                float newHullIntegrity = 50.0F;
                 System.Threading.Thread.Sleep(1000);
             }
         }
