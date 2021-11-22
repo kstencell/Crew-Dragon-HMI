@@ -9,10 +9,11 @@ namespace CrewDragonHMI
     class CriticalAlert
     {
         public bool isActive { get; private set; }
-        public bool onAlert { get; private set; }
+        public Dictionary<string, bool> onAlert { get; private set; }
+        public Dictionary<string, int> alertThresholds { get; private set; }
         public string alertMessage { get; private set; } // GOAL
 
-        public CriticalAlert(string file_name)
+        public CriticalAlert(string fileName, string[] moduleNames)
         {
 
         }
