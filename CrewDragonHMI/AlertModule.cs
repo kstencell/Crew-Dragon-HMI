@@ -93,5 +93,14 @@ namespace CrewDragonHMI
                 }
             }
         }
+
+        static public void ReceiveSensorValue(string module_name, int value)
+        {
+            bool should_be_on_alert = value < alertThresholds[module_name];
+
+            onAlert[module_name] = should_be_on_alert;
+
+            UpdateAlertFile();
+        }
     }
 }
