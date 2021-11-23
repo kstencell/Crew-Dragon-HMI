@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace CrewDragonHMI
 {
-    class ExteriorIntegrityModule
+    static class ExteriorIntegrityModule
     {
+        public static float HullIntegrity { get; set; }
     }
 }

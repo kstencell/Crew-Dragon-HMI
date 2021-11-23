@@ -80,7 +80,7 @@ namespace CrewDragonHMI
         {
             while (true)
             {
-                int batteryLevel = 50;
+                int batteryLevel = EnergyModule.BatteryLevel;
                 BW_battery.ReportProgress(batteryLevel);
                 System.Threading.Thread.Sleep(1000);
             }
@@ -100,7 +100,7 @@ namespace CrewDragonHMI
         {
             while (!BW_generator.CancellationPending)
             {
-                
+                EnergyModule.BatteryLevel = EnergyModule.BatteryLevel + 1; // Having this variable completely public makes me queasy, but it is OK for now
                 System.Threading.Thread.Sleep(250);
             }
         }
@@ -127,12 +127,12 @@ namespace CrewDragonHMI
 
         private void shields_Checked(object sender, RoutedEventArgs e)
         {
-            
+            EnergyModule.SetShields(); // Double check this with requirements. Seems like a bool should be the parameter
         }
 
         private void shields_Unchecked(object sender, RoutedEventArgs e)
         {
-            
+            EnergyModule.SetShields();
         }
 
 
@@ -166,7 +166,7 @@ namespace CrewDragonHMI
         {
             while (true)
             {
-                int fuelLevel = 50;
+                int fuelLevel = MovementModule.FuelLevel;
                 BW_fuel.ReportProgress(fuelLevel);
                 System.Threading.Thread.Sleep(1000);
             }
@@ -185,6 +185,7 @@ namespace CrewDragonHMI
 
         private void speedChanger_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
+            MovementModule.Speed = (int)e.NewValue; // I lazily cast this as an int. Should Speed be an int?
             speedText.Text = e.NewValue + "km/s";
 
         }
@@ -214,8 +215,8 @@ namespace CrewDragonHMI
         {
             while (true)
             {
-                int hullIntegrity = 50;
-                BW_hull.ReportProgress(hullIntegrity);
+                float hullIntegrity = ExteriorIntegrityModule.HullIntegrity;
+                BW_hull.ReportProgress((int)hullIntegrity); // I'm casting this to an int as HullIntegrity is a float. We should probably agree on just using ints or floats
                 System.Threading.Thread.Sleep(250);
             }
         }
@@ -232,7 +233,8 @@ namespace CrewDragonHMI
         {
             while (true)
             {
-                float newHullIntegrity = 50.0F;
+                float newHullIntegrity = ExteriorIntegrityModule.HullIntegrity - (0.01F * MovementModule.Speed);
+                ExteriorIntegrityModule.HullIntegrity = newHullIntegrity;
                 System.Threading.Thread.Sleep(1000);
             }
         }
