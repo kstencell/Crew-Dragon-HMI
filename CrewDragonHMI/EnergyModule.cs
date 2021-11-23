@@ -15,7 +15,7 @@ namespace CrewDragonHMI
         public static int batteryLevel;
         public static string batteryFilePath = "BatteryLevel.txt";
         public static bool generatorStatus;
-        public static bool shieldsStatus;
+        public static bool shieldStatus;
 
 
         static EnergyModule ()
@@ -39,17 +39,33 @@ namespace CrewDragonHMI
             return batteryLevel;
         }
 
-        public static void setBatteryLevel(int batteryLevel)
+        private static void setBatteryLevel(int initialLevel)
         {
-            try
+            batteryLevel = initialLevel;
+        }
+
+        public static bool requestEnergy(int energyRequested)
+        {
+            int newBatteryLevel = getBatteryLevel() - energyRequested;
+
+            if (newBatteryLevel >= 0)
             {
-                StreamWriter fileStream = new StreamWriter(batteryFilePath);
-                fileStream.WriteLine((batteryLevel).ToString());
-                fileStream.Close();
+                try
+                {
+                    StreamWriter fileStream = new StreamWriter(batteryFilePath);
+                    fileStream.WriteLine(newBatteryLevel.ToString());
+                    fileStream.Close();
+                    return true;
+                }
+                catch (IOException)
+                {
+                    Thread.Sleep(50);
+                    return false;
+                }
             }
-            catch (IOException)
+            else
             {
-                Thread.Sleep(50);
+                return false;
             }
         }
 
@@ -58,19 +74,19 @@ namespace CrewDragonHMI
             return generatorStatus;
         }
 
-        public static void setGeneratorStatus(bool status)
+        public static void toggleGeneratorStatus()
         {
-            generatorStatus = status;
+            generatorStatus = !generatorStatus;
         }
 
         public static bool getShieldStatus()
         {
-            return shieldsStatus;
+            return shieldStatus;
         }
 
-        public static void setShieldStatus(bool status)
+        public static void toggleShieldStatus(bool status)
         {
-            shieldsStatus = generatorStatus;
+            shieldStatus = !shieldStatus;
         }
     }
 }
