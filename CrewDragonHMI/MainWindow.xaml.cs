@@ -72,6 +72,10 @@ namespace CrewDragonHMI
             BW_generator.WorkerSupportsCancellation = true;
             BW_generator.DoWork += Generator_DoWork;
 
+            BW_shields.WorkerReportsProgress = false;
+            BW_shields.WorkerSupportsCancellation = true;
+            BW_shields.DoWork += Shields_DoWork;
+
         }
 
         // ***************
@@ -102,7 +106,10 @@ namespace CrewDragonHMI
         {
             while (!BW_generator.CancellationPending)
             {
-                EnergyModule.generateEnergy();
+                if (MovementModule.requestFuel(0.2F))
+                {
+                    EnergyModule.generateEnergy();
+                }
                 System.Threading.Thread.Sleep(250);
             }
         }
@@ -111,6 +118,7 @@ namespace CrewDragonHMI
         {
             if (!BW_generator.IsBusy)
             {
+                EnergyModule.toggleGeneratorStatus();
                 BW_generator.RunWorkerAsync();
             }
         }
@@ -119,6 +127,7 @@ namespace CrewDragonHMI
         {
             if (BW_generator.IsBusy)
             {
+                EnergyModule.toggleGeneratorStatus();
                 BW_generator.CancelAsync();
             }
         }
@@ -127,14 +136,35 @@ namespace CrewDragonHMI
         // **** SHIELDS ****
         // *****************
 
+        private void Shields_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while (!BW_shields.CancellationPending)
+            {
+                if (EnergyModule.requestEnergy(0.2F))
+                {
+                    EnergyModule.generateEnergy();
+                }
+                System.Threading.Thread.Sleep(250);
+            }
+        }
+
         private void shields_Checked(object sender, RoutedEventArgs e)
         {
-            EnergyModule.toggleShieldStatus();
+            if (!BW_shields.IsBusy)
+            {
+                EnergyModule.toggleShieldStatus();
+                BW_shields.RunWorkerAsync();
+            }
+            
         }
 
         private void shields_Unchecked(object sender, RoutedEventArgs e)
         {
-            EnergyModule.toggleShieldStatus();
+            if (BW_shields.IsBusy)
+            {
+                EnergyModule.toggleShieldStatus();
+                BW_shields.CancelAsync();
+            }
         }
 
 

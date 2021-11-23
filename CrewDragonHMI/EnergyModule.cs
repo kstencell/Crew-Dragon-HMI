@@ -45,7 +45,7 @@ namespace CrewDragonHMI
             batteryLevel = level;
         }
 
-        public static bool requestEnergy(int energyRequested)
+        public static bool requestEnergy(float energyRequested)
         {
             float newBatteryLevel = getBatteryLevel() - energyRequested;
 

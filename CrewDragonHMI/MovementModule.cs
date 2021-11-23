@@ -17,5 +17,10 @@ namespace CrewDragonHMI
             Speed = 50;
         }
 
+        public static bool requestFuel(float requestedValue)
+        {
+            return true;
+        }
+
     }
 }
