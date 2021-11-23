@@ -102,7 +102,7 @@ namespace CrewDragonHMI
         {
             while (!BW_generator.CancellationPending)
             {
-                EnergyModule.batteryLevel = EnergyModule.batteryLevel + 1; // Having this variable completely public makes me queasy, but it is OK for now
+                EnergyModule.generateEnergy();
                 System.Threading.Thread.Sleep(250);
             }
         }
@@ -129,7 +129,7 @@ namespace CrewDragonHMI
 
         private void shields_Checked(object sender, RoutedEventArgs e)
         {
-            EnergyModule.toggleShieldStatus(); // Double check this with requirements. Seems like a bool should be the parameter
+            EnergyModule.toggleShieldStatus();
         }
 
         private void shields_Unchecked(object sender, RoutedEventArgs e)

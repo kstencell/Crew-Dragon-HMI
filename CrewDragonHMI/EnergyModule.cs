@@ -13,8 +13,8 @@ namespace CrewDragonHMI
     public static class EnergyModule
     {
 
-        public static float batteryLevel;
-        public static string batteryFilePath = "BatteryLevel.txt";
+        private static float batteryLevel;
+        private static string batteryFilePath = "BatteryLevel.txt";
         public static bool generatorStatus;
         public static bool shieldStatus;
 
@@ -40,9 +40,9 @@ namespace CrewDragonHMI
             return (int)batteryLevel;
         }
 
-        private static void setBatteryLevel(float initialLevel)
+        private static void setBatteryLevel(float level)
         {
-            batteryLevel = initialLevel;
+            batteryLevel = level;
         }
 
         public static bool requestEnergy(int energyRequested)
@@ -67,6 +67,14 @@ namespace CrewDragonHMI
             else
             {
                 return false;
+            }
+        }
+
+        public static void generateEnergy()
+        {
+            if (batteryLevel <= 99)
+            {
+                batteryLevel = batteryLevel + 1;
             }
         }
 
