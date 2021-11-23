@@ -82,7 +82,7 @@ namespace CrewDragonHMI
         {
             while (true)
             {
-                int batteryLevel = EnergyModule.BatteryLevel;
+                int batteryLevel = EnergyModule.getBatteryLevel();
                 BW_battery.ReportProgress(batteryLevel);
                 System.Threading.Thread.Sleep(1000);
             }
@@ -102,7 +102,7 @@ namespace CrewDragonHMI
         {
             while (!BW_generator.CancellationPending)
             {
-                EnergyModule.BatteryLevel = EnergyModule.BatteryLevel + 1; // Having this variable completely public makes me queasy, but it is OK for now
+                EnergyModule.batteryLevel = EnergyModule.batteryLevel + 1; // Having this variable completely public makes me queasy, but it is OK for now
                 System.Threading.Thread.Sleep(250);
             }
         }
@@ -129,12 +129,12 @@ namespace CrewDragonHMI
 
         private void shields_Checked(object sender, RoutedEventArgs e)
         {
-            EnergyModule.SetShields(); // Double check this with requirements. Seems like a bool should be the parameter
+            EnergyModule.toggleShieldStatus(); // Double check this with requirements. Seems like a bool should be the parameter
         }
 
         private void shields_Unchecked(object sender, RoutedEventArgs e)
         {
-            EnergyModule.SetShields();
+            EnergyModule.toggleShieldStatus();
         }
 
 

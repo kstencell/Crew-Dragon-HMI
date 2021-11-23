@@ -6,13 +6,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.IO;
 using System.ComponentModel;
+using System.Globalization;
 
 namespace CrewDragonHMI
 {
     public static class EnergyModule
     {
 
-        public static int batteryLevel;
+        public static float batteryLevel;
         public static string batteryFilePath = "BatteryLevel.txt";
         public static bool generatorStatus;
         public static bool shieldStatus;
@@ -20,7 +21,7 @@ namespace CrewDragonHMI
 
         static EnergyModule ()
         {
-            setBatteryLevel(50);
+            setBatteryLevel(50.0F);
 
         }
 
@@ -29,24 +30,24 @@ namespace CrewDragonHMI
             try
             {
                 StreamReader batteryLevelStreamReader = new StreamReader(batteryFilePath);
-                batteryLevel = Int32.Parse(batteryLevelStreamReader.ReadLine());
+                batteryLevel = float.Parse(batteryLevelStreamReader.ReadLine(), CultureInfo.InvariantCulture.NumberFormat);
                 batteryLevelStreamReader.Close();
             } catch (IOException)
             {
                 Thread.Sleep(50);
             }
 
-            return batteryLevel;
+            return (int)batteryLevel;
         }
 
-        private static void setBatteryLevel(int initialLevel)
+        private static void setBatteryLevel(float initialLevel)
         {
             batteryLevel = initialLevel;
         }
 
         public static bool requestEnergy(int energyRequested)
         {
-            int newBatteryLevel = getBatteryLevel() - energyRequested;
+            float newBatteryLevel = getBatteryLevel() - energyRequested;
 
             if (newBatteryLevel >= 0)
             {
@@ -84,7 +85,7 @@ namespace CrewDragonHMI
             return shieldStatus;
         }
 
-        public static void toggleShieldStatus(bool status)
+        public static void toggleShieldStatus()
         {
             shieldStatus = !shieldStatus;
         }
