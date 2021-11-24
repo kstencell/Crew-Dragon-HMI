@@ -128,11 +128,13 @@ namespace CrewDragonHMI
         private void shields_Checked(object sender, RoutedEventArgs e)
         {
             EnergyModule.SetShields(); // Double check this with requirements. Seems like a bool should be the parameter
+            Console.WriteLine("Shields are checked!");
         }
 
         private void shields_Unchecked(object sender, RoutedEventArgs e)
         {
             EnergyModule.SetShields();
+            Console.WriteLine("Shields are unchecked!");
         }
 
 
@@ -237,6 +239,11 @@ namespace CrewDragonHMI
                 ExteriorIntegrityModule.HullIntegrity = newHullIntegrity;
                 System.Threading.Thread.Sleep(1000);
             }
+        }
+
+        private void alarm_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

@@ -5,61 +5,223 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CrewDragonHMI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="600" Width="800">
     <Grid>
-        <TextBox Name="hullText" HorizontalAlignment="Left" Margin="104,127,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="63" Height="37"/>
-        <TextBox Name="rotationText" HorizontalAlignment="Left" Margin="265,94,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="55" Height="29"/>
-        <TextBox Name="speedText" HorizontalAlignment="Left" Margin="379,94,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="65" Height="29"/>
-        <Slider Name="rotationChanger" HorizontalAlignment="Left" Margin="274,93,0,0" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.5,0.5">
+        <TextBox Name="hullText" 
+                 HorizontalAlignment="Center" 
+                 VerticalAlignment="Top" 
+                 Margin="0,180,0,0" 
+                 Text="HullText" 
+                 TextWrapping="Wrap" 
+                 Width="63" Height="37"/>
+        <TextBox Name="rotationText" 
+                 HorizontalAlignment="Center" 
+                 VerticalAlignment="Top"
+                 Margin="0,94,0,0" 
+                 Text="rotation" 
+                 TextWrapping="Wrap"
+                  Width="55" Height="29"/>
+        <Slider Name="rotationChanger" 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Top" 
+                Margin="0,50,0,0" 
+                Width="120" 
+                RenderTransformOrigin="0.5,0.5">
             <Slider.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
                     <SkewTransform/>
-                    <RotateTransform Angle="90"/>
+                    <RotateTransform Angle="0"/>
                     <TranslateTransform/>
                 </TransformGroup>
             </Slider.RenderTransform>
         </Slider>
-        <Slider Name="speedChanger" HorizontalAlignment="Left" Margin="402,94,0,0" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.5,0.5" ValueChanged="speedChanger_ValueChanged">
+        <TextBox Name="speedText" 
+                 HorizontalAlignment="Center" 
+                 VerticalAlignment="Top"
+                 Margin="500,150,0,50" 
+                 Text="SpeedText" 
+                 TextWrapping="Wrap" 
+                 Width="65" Height="29"/>
+        <Slider Name="speedChanger" 
+                HorizontalAlignment="Center" 
+                Margin="580,150,0,50" 
+                VerticalAlignment="Top" 
+                Width="120" 
+                RenderTransformOrigin="0.5,0.5" 
+                ValueChanged="speedChanger_ValueChanged">
             <Slider.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
                     <SkewTransform/>
-                    <RotateTransform Angle="90"/>
+                    <RotateTransform Angle="270"/>
                     <TranslateTransform/>
                 </TransformGroup>
             </Slider.RenderTransform>
         </Slider>
-        <TextBox Name="batteryText" HorizontalAlignment="Left" Margin="692,99,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="57"/>
-        <ProgressBar Name="battery" HorizontalAlignment="Left" Height="10" Margin="625,102,0,0" VerticalAlignment="Top" Width="100" RenderTransformOrigin="0.5,0.5">
+        <TextBox Name="batteryText" 
+                 HorizontalAlignment="Center" 
+                 VerticalAlignment="Top"
+                 Margin="-118,445,0,0" 
+                 Width="75" 
+                 Text="BatteryText" 
+                 TextWrapping="Wrap" />
+        <ProgressBar Name="battery" 
+                     HorizontalAlignment="Center" 
+                     VerticalAlignment="Top"
+                     Margin="-120,370,0,0" 
+                     Height="10"
+                     Width="100" 
+                     RenderTransformOrigin="0.5,0.5">
             <ProgressBar.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
                     <SkewTransform/>
-                    <RotateTransform Angle="90"/>
+                    <RotateTransform Angle="270"/>
                     <TranslateTransform/>
                 </TransformGroup>
             </ProgressBar.RenderTransform>
         </ProgressBar>
-        <TextBox Name="fuelText" HorizontalAlignment="Left" Margin="693,307,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="56"/>
-        <ProgressBar Name="fuel" HorizontalAlignment="Left" Height="10" Margin="626,300,0,0" VerticalAlignment="Top" Width="100" RenderTransformOrigin="0.5,0.5">
+        <TextBox Name="fuelText" 
+                 HorizontalAlignment="Center" 
+                 VerticalAlignment="Top"
+                 Margin="122,445,0,0" 
+                 Width="75"
+                 Text="FuelText" 
+                 TextWrapping="Wrap"/>
+        <ProgressBar Name="fuel" 
+                     HorizontalAlignment="Center" 
+                     VerticalAlignment="Top"
+                     Margin="120,370,0,0" 
+                     Height="10"
+                     Width="100" 
+                     RenderTransformOrigin="0.5,0.5">
             <ProgressBar.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
                     <SkewTransform/>
-                    <RotateTransform Angle="90"/>
+                    <RotateTransform Angle="270"/>
                     <TranslateTransform/>
                 </TransformGroup>
             </ProgressBar.RenderTransform>
         </ProgressBar>
-        <Button Name="warpDrive" Content="Button" HorizontalAlignment="Left" Margin="400,307,0,0" VerticalAlignment="Top"/>
-        <Button Name="alarm" Content="Alarm" HorizontalAlignment="Left" Margin="265,307,0,0" VerticalAlignment="Top"/>
-        <CheckBox Name="generator" HorizontalAlignment="Left" Margin="559,99,0,0" VerticalAlignment="Top" Unchecked="generator_Unchecked" Checked="generator_Checked"/>
-        <TextBox HorizontalAlignment="Left" Margin="539,137,0,0" Text="Generator" TextWrapping="Wrap" VerticalAlignment="Top" Width="64"/>
-        <CheckBox Name="shields" HorizontalAlignment="Left" Margin="559,307,0,0" VerticalAlignment="Top" Checked="shields_Checked" Unchecked="shields_Unchecked"/>
-        <TextBox Name="shieldsText" HorizontalAlignment="Left" Margin="520,342,0,0" Text="Deflector Shields" TextWrapping="Wrap" VerticalAlignment="Top" Width="102"/>
+        <Button Name="warpDrive" 
+                Content="Warp Drive" 
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Top"
+                Margin="0,50,75,0" />
 
+        <ToggleButton Name="alarm"  
+                      HorizontalAlignment="Center" 
+                      Margin="-450,25,0,50" 
+                      VerticalAlignment="Top"
+                      Width="75"
+                      Height="75">
+            <ToggleButton.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="75" />
+                </Style>
+            </ToggleButton.Resources>
+            <ToggleButton.Style>
+                <Style TargetType="ToggleButton">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ToggleButton">
+                                <Border BorderBrush="{TemplateBinding BorderBrush}" 
+                                Background="{TemplateBinding Background}">
+                                    <ContentPresenter HorizontalAlignment="Center"                  
+                                              VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Background" Value="Red" />
+                    <Style.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Background"  Value="Green" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ToggleButton.Style>
+        </ToggleButton>
+        <Label Content="Alarm" 
+               HorizontalContentAlignment="Center"
+               HorizontalAlignment="Center" 
+               Margin="-450,100,0,50" 
+               VerticalAlignment="Top"/>
 
+        <ToggleButton Name="generator" 
+                      HorizontalAlignment="Center" 
+                      VerticalAlignment="Top" 
+                      Margin="120,260,0,0" 
+                      Unchecked="generator_Unchecked" 
+                      Checked="generator_Checked"
+                      Height="10"
+                      Width="10">
+            <ToggleButton.Style>
+                <Style TargetType="ToggleButton">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ToggleButton">
+                                <Border BorderBrush="{TemplateBinding BorderBrush}" 
+                                Background="{TemplateBinding Background}">
+                                    <ContentPresenter HorizontalAlignment="Center"                  
+                                              VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Background" Value="Red" />
+                    <Style.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Background"  Value="Green" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ToggleButton.Style>
+        </ToggleButton>
+        <Label Name="generatorText" 
+               HorizontalAlignment="Center" 
+               VerticalAlignment="Top" 
+               Margin="120,280,0,0"
+               Content="Generator"/>
 
+        <ToggleButton Name="shields" 
+                      HorizontalAlignment="Center" 
+                      VerticalAlignment="Top" 
+                      Margin="-120,260,0,0" 
+                      Checked="shields_Checked" 
+                      Unchecked="shields_Unchecked"
+                      Height="10"
+                      Width="10">
+            <ToggleButton.Style>
+                <Style TargetType="ToggleButton">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ToggleButton">
+                                <Border BorderBrush="{TemplateBinding BorderBrush}" 
+                                Background="{TemplateBinding Background}">
+                                    <ContentPresenter HorizontalAlignment="Center"                  
+                                              VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Background" Value="Red" />
+                    <Style.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Background"  Value="Green" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ToggleButton.Style>
+        </ToggleButton>
+        <Label Name="shieldsText"
+               HorizontalAlignment="Center" 
+               VerticalAlignment="Top" 
+               Margin="-120,280,0,0"
+               Width="102"
+               Content="Deflector Shields"
+               HorizontalContentAlignment="Center"/>
     </Grid>
 </Window>
