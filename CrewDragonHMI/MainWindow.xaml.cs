@@ -363,6 +363,10 @@ namespace CrewDragonHMI
             BW_hull.DoWork += Hull_DoWork;
             BW_hull.ProgressChanged += Hull_ProgressChanged;
             BW_hull.RunWorkerAsync();
+
+            BW_damage.WorkerReportsProgress = false;
+            BW_damage.DoWork += Damage_DoWork;
+            BW_damage.RunWorkerAsync();
         }
 
         // ****************
@@ -373,8 +377,8 @@ namespace CrewDragonHMI
         {
             while (true)
             {
-                int hullIntegrity = ExteriorIntegrityModule.getHullIntegrity();
-                BW_hull.ReportProgress(hullIntegrity); // I'm casting this to an int as HullIntegrity is a float. We should probably agree on just using ints or floats
+                float hullIntegrity = ExteriorIntegrityModule.getHullIntegrity();
+                BW_hull.ReportProgress((int)hullIntegrity); // I'm casting this to an int as HullIntegrity is a float. We should probably agree on just using ints or floats
                 System.Threading.Thread.Sleep(250);
             }
         }
@@ -387,9 +391,23 @@ namespace CrewDragonHMI
         // ***** DAMAGE *****
         // ******************
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Damage_DoWork(object sender, DoWorkEventArgs e)
         {
-            ExteriorIntegrityModule.takeDamage();
+            while (ExteriorIntegrityModule.getHullIntegrity() > 0)
+            {
+                if (MovementModule.getWarpDriveStatus())
+                {
+                    ExteriorIntegrityModule.takeDamage(2);
+                }
+                else
+                {
+                    float damage = ((float)MovementModule.getSpeed()) / 1000;
+                    ExteriorIntegrityModule.takeDamage(damage);
+                }
+                System.Threading.Thread.Sleep(1000);
+            }
+
+            Environment.Exit(0);
         }
     }
 }

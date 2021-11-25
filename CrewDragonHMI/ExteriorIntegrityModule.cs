@@ -12,20 +12,20 @@ namespace CrewDragonHMI
 {
     static class ExteriorIntegrityModule
     {
-        private static int hullIntegrity;
+        private static float hullIntegrity;
         private static string hullFilePath = "Hull.txt";
 
         static ExteriorIntegrityModule()
         {
-            setHullIntegrity(100);
+            setHullIntegrity(100.0f);
         }
 
-        public static int getHullIntegrity()
+        public static float getHullIntegrity()
         {
             try
             {
                 StreamReader hullStreamReader = new StreamReader(hullFilePath);
-                hullIntegrity = Int32.Parse(hullStreamReader.ReadLine());
+                hullIntegrity = float.Parse(hullStreamReader.ReadLine(), CultureInfo.InvariantCulture.NumberFormat);
                 hullStreamReader.Close();
             }
             catch (IOException)
@@ -36,7 +36,7 @@ namespace CrewDragonHMI
             return hullIntegrity;
         }
 
-        private static void setHullIntegrity(int hull)
+        private static void setHullIntegrity(float hull)
         {
             try
             {
@@ -50,11 +50,11 @@ namespace CrewDragonHMI
             }
         }
 
-        public static void takeDamage()
+        public static void takeDamage(float damage)
         {
             if (!EnergyModule.getShieldStatus())
             {
-                setHullIntegrity(getHullIntegrity() - 10);
+                setHullIntegrity(getHullIntegrity() - damage);
             }
         }
     }

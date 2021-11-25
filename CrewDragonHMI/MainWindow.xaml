@@ -59,6 +59,5 @@
         <TextBox Name="shieldsText" HorizontalAlignment="Left" Margin="520,342,0,0" Text="Deflector Shields" TextWrapping="Wrap" VerticalAlignment="Top" Width="102"/>
         <CheckBox Name="warpDrive" HorizontalAlignment="Left" Margin="400,305,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.189,-2.916" Checked="warpDrive_Checked" Unchecked="warpDrive_Unchecked"/>
         <TextBox Text="WARP DRIVE" HorizontalAlignment="Left" Margin="379,342,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Button Content="Simulate Damage" HorizontalAlignment="Left" Margin="68,235,0,0" VerticalAlignment="Top" Click="Button_Click"/>
     </Grid>
 </Window>
