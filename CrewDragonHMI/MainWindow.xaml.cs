@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Controls.Primitives;
 
 namespace CrewDragonHMI
 {
@@ -22,58 +23,140 @@ namespace CrewDragonHMI
     /// </summary>
     public partial class MainWindow : Window
     {
-        BackgroundWorker fuelIndicatorBackgroundWorker = new BackgroundWorker();
-        BackgroundWorker speedIndicatorBackgroundWorker = new BackgroundWorker();
+        BackgroundWorker BW_fuel = new BackgroundWorker();
+        BackgroundWorker BW_speed = new BackgroundWorker();
+        BackgroundWorker BW_direction = new BackgroundWorker();
+        BackgroundWorker BW_warpDrive = new BackgroundWorker();
+
         public MainWindow()
         {
             InitializeComponent();
-            InitializeFuelIndicatorBackgroundWorker();
-            InitializeSpeedIndicatorBackgroundWorker();
+            InitializeMovementModule();
         }
 
-        private void InitializeFuelIndicatorBackgroundWorker()
+        private void InitializeMovementModule()
         {
-            fuelIndicatorBackgroundWorker.WorkerReportsProgress = true;
-            fuelIndicatorBackgroundWorker.DoWork += FuelIndicatorBackgroundWorker_DoWork;
-            fuelIndicatorBackgroundWorker.ProgressChanged += FuelIndicatorBackgroundWorker_ProgressChanged;
-            fuelIndicatorBackgroundWorker.RunWorkerAsync();
+            BW_fuel.WorkerReportsProgress = true;
+            BW_fuel.DoWork += Fuel_DoWork;
+            BW_fuel.ProgressChanged += Fuel_ProgressChanged;
+            BW_fuel.RunWorkerAsync();
+
+            BW_warpDrive.WorkerReportsProgress = false;
+            BW_warpDrive.WorkerSupportsCancellation = true;
+            BW_warpDrive.DoWork += WarpDrive_DoWork;
         }
 
-        private void FuelIndicatorBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        //******************************
+        //********** FUEL **************
+        //******************************
+        private void Fuel_DoWork(object sender, DoWorkEventArgs e)
         {
             while (true)
             {
-                int fuelLevel = MovementModule.getFuelLevel();
-                fuelIndicatorBackgroundWorker.ReportProgress(fuelLevel);
-                Thread.Sleep(1000);
+                float fuelLevel = MovementModule.getFuelLevel();
+                BW_fuel.ReportProgress((int)fuelLevel);
+                Thread.Sleep(250);
             }
         }
-        private void FuelIndicatorBackgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        private void Fuel_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             FuelIndicator.Value = e.ProgressPercentage;
+            fuelText.Text = "Fuel: " + e.ProgressPercentage.ToString() + "%";
         }
 
-        private void InitializeSpeedIndicatorBackgroundWorker()
-        {
-            speedIndicatorBackgroundWorker.WorkerReportsProgress = true;
-            speedIndicatorBackgroundWorker.DoWork += SpeedIndicatorBackgroundWorker_DoWork;
-            speedIndicatorBackgroundWorker.ProgressChanged += SpeedIndicatorBackgroundWorker_ProgressChanged;
-            speedIndicatorBackgroundWorker.RunWorkerAsync();
-        }
 
-        private void SpeedIndicatorBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        //******************************
+        //********** SPEED *************
+        //******************************
+        private void SpeedSlider_DragCompleted(object sender, DragCompletedEventArgs e)
         {
-            while (true)
+            if (!MovementModule.getWarpDriveStatus())
             {
-                int speed = MovementModule.getSpeed();
-                speedIndicatorBackgroundWorker.ReportProgress(speed);
-                Thread.Sleep(1000);
+                if (MovementModule.requestSpeedChange((int)speedSlider.Value))
+                {
+                    speedText.Text = "Speed: " + (int)speedSlider.Value + " KM/S";
+                }
+                else
+                {
+                    speedSlider.Value = MovementModule.getSpeed();
+                    speedText.Text = "Speed: " + (int)speedSlider.Value + " KM/S";
+                }
+            }
+            else
+            {
+                speedSlider.Value = MovementModule.getSpeed();
+                speedText.Text = "Speed: " + (int)speedSlider.Value + " KM/S";
             }
         }
 
-        private void SpeedIndicatorBackgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        //******************************
+        //******** DIRECTION ***********
+        //******************************
+        private void DirectionSlider_DragCompleted(object sender, DragCompletedEventArgs e)
         {
-            SpeedIndicator.Value = e.ProgressPercentage;
+            if (!MovementModule.getWarpDriveStatus())
+            {
+                if (MovementModule.requestDirectionChange((int)directionSlider.Value))
+                {
+                    directionText.Text = "Direction: " + (int)directionSlider.Value + " Degrees";
+                }
+                else
+                {
+                    directionSlider.Value = MovementModule.getDirection();
+                    directionText.Text = "Direction: " + (int)directionSlider.Value + " Degrees";
+                }
+            }
+            else
+            {
+                directionSlider.Value = MovementModule.getDirection();
+                directionText.Text = "Direction: " + (int)directionSlider.Value + " Degrees";
+            }
+        }
+
+        //******************************
+        //********* WARP DRIVE *********
+        //******************************
+
+        private void WarpDrive_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while (!BW_warpDrive.CancellationPending)
+            {
+                int previousSpeed = MovementModule.getSpeed();
+
+                if (MovementModule.requestFuel(1))
+                {
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        speedSlider.Value = speedSlider.Maximum;
+                        speedText.Text = "Speed: LIGHT SPEED";
+                    });
+                    System.Threading.Thread.Sleep(1000);
+                }
+                
+            }
+        }
+
+        private void warpDrive_Checked(object sender, RoutedEventArgs e)
+        {
+            if (!BW_warpDrive.IsBusy)
+            {
+                MovementModule.toggleWarpDrive();
+                BW_warpDrive.RunWorkerAsync();
+            }
+        }
+
+        private void warpDrive_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (BW_warpDrive.IsBusy)
+            {
+                MovementModule.toggleWarpDrive();
+                BW_warpDrive.CancelAsync();
+                this.Dispatcher.Invoke(() =>
+                {
+                    speedSlider.Value = MovementModule.getSpeed();
+                    speedText.Text = "Speed: " + (int)speedSlider.Value + " KM/S";
+                });
+            }
         }
     }
 }
