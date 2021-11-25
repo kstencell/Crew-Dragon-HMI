@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Controls.Primitives;
 
 
 namespace CrewDragonHMI
@@ -39,8 +40,7 @@ namespace CrewDragonHMI
         // Movement Module Threads
         // ***********************
         BackgroundWorker BW_fuel = new BackgroundWorker();
-        BackgroundWorker BW_speed = new BackgroundWorker();
-        BackgroundWorker BW_rotation = new BackgroundWorker();
+        BackgroundWorker BW_warpDrive = new BackgroundWorker();
 
         // *********************************
         // Exterior Integrity Module Threads
@@ -88,10 +88,10 @@ namespace CrewDragonHMI
             {
                 int batteryLevel = EnergyModule.getBatteryLevel();
                 BW_battery.ReportProgress(batteryLevel);
-                System.Threading.Thread.Sleep(1000);
+                System.Threading.Thread.Sleep(250);
             }
         }
-        
+
         private void Battery_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             battery.Value = e.ProgressPercentage;
@@ -104,18 +104,38 @@ namespace CrewDragonHMI
 
         private void Generator_DoWork(object sender, DoWorkEventArgs e)
         {
+            float requestAmount = 0.5f;
             while (!BW_generator.CancellationPending)
             {
-                if (MovementModule.requestFuel(0.2F))
+                if (EnergyModule.getBatteryLevel() < 100)
                 {
-                    EnergyModule.generateEnergy();
+                    if (MovementModule.requestFuel(requestAmount))
+                    {
+                        EnergyModule.generateEnergy();
+                    }
                 }
-                System.Threading.Thread.Sleep(250);
+                
+                if (MovementModule.getFuelLevel() < requestAmount)
+                {
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        generator.IsChecked = false;
+                    });
+                }
+                System.Threading.Thread.Sleep(1000);
             }
         }
 
         private void generator_Checked(object sender, RoutedEventArgs e)
         {
+            if (MovementModule.getFuelLevel() < 0.5F)
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    generator.IsChecked = false;
+                });
+                return;
+            }
             if (!BW_generator.IsBusy)
             {
                 EnergyModule.toggleGeneratorStatus();
@@ -140,22 +160,33 @@ namespace CrewDragonHMI
         {
             while (!BW_shields.CancellationPending)
             {
-                if (EnergyModule.requestEnergy(0.2F))
+                if (!EnergyModule.requestEnergy(1.0F))
                 {
-                    EnergyModule.generateEnergy();
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        shields.IsChecked = false;
+                    });
                 }
-                System.Threading.Thread.Sleep(250);
+                System.Threading.Thread.Sleep(1000);
             }
         }
 
         private void shields_Checked(object sender, RoutedEventArgs e)
         {
+            if (EnergyModule.getBatteryLevel() < 1.0F)
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    shields.IsChecked = false;
+                });
+                return;
+            }
             if (!BW_shields.IsBusy)
             {
                 EnergyModule.toggleShieldStatus();
                 BW_shields.RunWorkerAsync();
             }
-            
+
         }
 
         private void shields_Unchecked(object sender, RoutedEventArgs e)
@@ -181,52 +212,151 @@ namespace CrewDragonHMI
         /*******************************************/
         /********* MOVEMENT MODULE METHODS *********/
         /*******************************************/
-
         private void InitializeMovementModule()
         {
             BW_fuel.WorkerReportsProgress = true;
             BW_fuel.DoWork += Fuel_DoWork;
             BW_fuel.ProgressChanged += Fuel_ProgressChanged;
             BW_fuel.RunWorkerAsync();
+
+            BW_warpDrive.WorkerReportsProgress = false;
+            BW_warpDrive.WorkerSupportsCancellation = true;
+            BW_warpDrive.DoWork += WarpDrive_DoWork;
         }
 
-        // **************
-        // **** FUEL ****
-        // **************
-
+        //******************************
+        //********** FUEL **************
+        //******************************
         private void Fuel_DoWork(object sender, DoWorkEventArgs e)
         {
             while (true)
             {
-                int fuelLevel = MovementModule.FuelLevel;
-                BW_fuel.ReportProgress(fuelLevel);
-                System.Threading.Thread.Sleep(1000);
+                float fuelLevel = MovementModule.getFuelLevel();
+                BW_fuel.ReportProgress((int)fuelLevel);
+                Thread.Sleep(250);
             }
         }
 
         private void Fuel_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             fuel.Value = e.ProgressPercentage;
-            fuelText.Text = "Fuel Level: " + e.ProgressPercentage.ToString() + "%";
+            fuelText.Text = "Fuel: " + e.ProgressPercentage.ToString() + "%";
         }
 
 
-        // ***************
-        // **** SPEED ****
-        // ***************
-
-        private void speedChanger_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        //******************************
+        //********** SPEED *************
+        //******************************
+        private void SpeedSlider_DragCompleted(object sender, DragCompletedEventArgs e)
         {
-            MovementModule.Speed = (int)e.NewValue; // I lazily cast this as an int. Should Speed be an int?
-            speedText.Text = e.NewValue + "km/s";
-
+            if (!MovementModule.getWarpDriveStatus())
+            {
+                if (MovementModule.requestSpeedChange((int)speedSlider.Value))
+                {
+                    speedText.Text = "Speed: " + (int)speedSlider.Value + " KM/S";
+                }
+                else
+                {
+                    speedSlider.Value = MovementModule.getSpeed();
+                    speedText.Text = "Speed: " + (int)speedSlider.Value + " KM/S";
+                }
+            }
+            else
+            {
+                speedSlider.Value = MovementModule.getSpeed();
+                speedText.Text = "Speed: " + (int)speedSlider.Value + " KM/S";
+            }
         }
 
+        //******************************
+        //******** DIRECTION ***********
+        //******************************
+        private void DirectionSlider_DragCompleted(object sender, DragCompletedEventArgs e)
+        {
+            if (!MovementModule.getWarpDriveStatus())
+            {
+                if (MovementModule.requestDirectionChange((int)directionSlider.Value))
+                {
+                    directionText.Text = "Direction: " + (int)directionSlider.Value + " Degrees";
+                }
+                else
+                {
+                    directionSlider.Value = MovementModule.getDirection();
+                    directionText.Text = "Direction: " + (int)directionSlider.Value + " Degrees";
+                }
+            }
+            else
+            {
+                directionSlider.Value = MovementModule.getDirection();
+                directionText.Text = "Direction: " + (int)directionSlider.Value + " Degrees";
+            }
+        }
 
+        //******************************
+        //********* WARP DRIVE *********
+        //******************************
+        private void WarpDrive_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while (!BW_warpDrive.CancellationPending)
+            {
+                int previousSpeed = MovementModule.getSpeed();
+
+                if (MovementModule.requestFuel(0.2f))
+                {
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        speedSlider.Value = speedSlider.Maximum;
+                        speedText.Text = "Speed: LIGHT SPEED";
+                    });
+                }
+                else
+                {
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        warpDrive.IsChecked = false;
+                    });
+                    
+                }
+                System.Threading.Thread.Sleep(200);
+            }
+        }
+
+        private void warpDrive_Checked(object sender, RoutedEventArgs e)
+        {
+            if (!BW_warpDrive.IsBusy)
+            {
+                MovementModule.toggleWarpDrive();
+                BW_warpDrive.RunWorkerAsync();
+            }
+        }
+
+        private void warpDrive_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (MovementModule.getFuelLevel() < 0.2f)
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    warpDrive.IsChecked = false;
+                    speedSlider.Value = MovementModule.getSpeed();
+                    speedText.Text = "Speed: " + (int)speedSlider.Value + " KM/S";
+                });
+                return;
+            }
+            if (BW_warpDrive.IsBusy)
+            {
+                MovementModule.toggleWarpDrive();
+                BW_warpDrive.CancelAsync();
+                this.Dispatcher.Invoke(() =>
+                {
+                    speedSlider.Value = MovementModule.getSpeed();
+                    speedText.Text = "Speed: " + (int)speedSlider.Value + " KM/S";
+                });
+
+            }
+        }
         /*****************************************************/
         /********* EXTERIOR INTEGRITY MODULE METHODS *********/
         /*****************************************************/
-
         private void InitializeExteriorIntegrityModule()
         {
             BW_hull.WorkerReportsProgress = true;
@@ -265,7 +395,7 @@ namespace CrewDragonHMI
         {
             while (true)
             {
-                float newHullIntegrity = ExteriorIntegrityModule.HullIntegrity - (0.01F * MovementModule.Speed);
+                float newHullIntegrity = ExteriorIntegrityModule.HullIntegrity - (0.01F * MovementModule.getSpeed());
                 ExteriorIntegrityModule.HullIntegrity = newHullIntegrity;
                 System.Threading.Thread.Sleep(1000);
             }
