@@ -21,7 +21,7 @@ namespace CrewDragonHMI
 
         static EnergyModule ()
         {
-            setBatteryLevel(50.0F);
+            setBatteryLevel(10.0F);
 
         }
 
@@ -42,7 +42,17 @@ namespace CrewDragonHMI
 
         private static void setBatteryLevel(float level)
         {
-            batteryLevel = level;
+            try
+            {
+                StreamWriter fileStream = new StreamWriter(batteryFilePath);
+                fileStream.WriteLine((level).ToString());
+                fileStream.Close();
+            }
+
+            catch (IOException)
+            {
+                Thread.Sleep(50);
+            }
         }
 
         public static bool requestEnergy(float energyRequested)
@@ -74,7 +84,7 @@ namespace CrewDragonHMI
         {
             if (batteryLevel <= 99)
             {
-                batteryLevel = batteryLevel + 1;
+                setBatteryLevel(batteryLevel + 1);
             }
         }
 

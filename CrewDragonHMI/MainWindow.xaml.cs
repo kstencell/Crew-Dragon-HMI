@@ -88,10 +88,10 @@ namespace CrewDragonHMI
             {
                 int batteryLevel = EnergyModule.getBatteryLevel();
                 BW_battery.ReportProgress(batteryLevel);
-                System.Threading.Thread.Sleep(1000);
+                System.Threading.Thread.Sleep(250);
             }
         }
-        
+
         private void Battery_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             battery.Value = e.ProgressPercentage;
@@ -104,18 +104,38 @@ namespace CrewDragonHMI
 
         private void Generator_DoWork(object sender, DoWorkEventArgs e)
         {
+            float requestAmount = 0.5f;
             while (!BW_generator.CancellationPending)
             {
-                if (MovementModule.requestFuel(0.2F))
+                if (EnergyModule.getBatteryLevel() < 100)
                 {
-                    EnergyModule.generateEnergy();
+                    if (MovementModule.requestFuel(requestAmount))
+                    {
+                        EnergyModule.generateEnergy();
+                    }
                 }
-                System.Threading.Thread.Sleep(250);
+                
+                if (MovementModule.getFuelLevel() < requestAmount)
+                {
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        generator.IsChecked = false;
+                    });
+                }
+                System.Threading.Thread.Sleep(1000);
             }
         }
 
         private void generator_Checked(object sender, RoutedEventArgs e)
         {
+            if (MovementModule.getFuelLevel() < 0.5F)
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    generator.IsChecked = false;
+                });
+                return;
+            }
             if (!BW_generator.IsBusy)
             {
                 EnergyModule.toggleGeneratorStatus();
@@ -140,22 +160,33 @@ namespace CrewDragonHMI
         {
             while (!BW_shields.CancellationPending)
             {
-                if (EnergyModule.requestEnergy(0.2F))
+                if (!EnergyModule.requestEnergy(1.0F))
                 {
-                    EnergyModule.generateEnergy();
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        shields.IsChecked = false;
+                    });
                 }
-                System.Threading.Thread.Sleep(250);
+                System.Threading.Thread.Sleep(1000);
             }
         }
 
         private void shields_Checked(object sender, RoutedEventArgs e)
         {
+            if (EnergyModule.getBatteryLevel() < 1.0F)
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    shields.IsChecked = false;
+                });
+                return;
+            }
             if (!BW_shields.IsBusy)
             {
                 EnergyModule.toggleShieldStatus();
                 BW_shields.RunWorkerAsync();
             }
-            
+
         }
 
         private void shields_Unchecked(object sender, RoutedEventArgs e)
@@ -205,9 +236,10 @@ namespace CrewDragonHMI
                 Thread.Sleep(250);
             }
         }
+
         private void Fuel_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            FuelIndicator.Value = e.ProgressPercentage;
+            fuel.Value = e.ProgressPercentage;
             fuelText.Text = "Fuel: " + e.ProgressPercentage.ToString() + "%";
         }
 
@@ -269,16 +301,23 @@ namespace CrewDragonHMI
             {
                 int previousSpeed = MovementModule.getSpeed();
 
-                if (MovementModule.requestFuel(1))
+                if (MovementModule.requestFuel(0.2f))
                 {
                     this.Dispatcher.Invoke(() =>
                     {
                         speedSlider.Value = speedSlider.Maximum;
                         speedText.Text = "Speed: LIGHT SPEED";
                     });
-                    System.Threading.Thread.Sleep(1000);
                 }
-                
+                else
+                {
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        warpDrive.IsChecked = false;
+                    });
+                    
+                }
+                System.Threading.Thread.Sleep(200);
             }
         }
 
@@ -293,6 +332,16 @@ namespace CrewDragonHMI
 
         private void warpDrive_Unchecked(object sender, RoutedEventArgs e)
         {
+            if (MovementModule.getFuelLevel() < 0.2f)
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    warpDrive.IsChecked = false;
+                    speedSlider.Value = MovementModule.getSpeed();
+                    speedText.Text = "Speed: " + (int)speedSlider.Value + " KM/S";
+                });
+                return;
+            }
             if (BW_warpDrive.IsBusy)
             {
                 MovementModule.toggleWarpDrive();
@@ -302,12 +351,12 @@ namespace CrewDragonHMI
                     speedSlider.Value = MovementModule.getSpeed();
                     speedText.Text = "Speed: " + (int)speedSlider.Value + " KM/S";
                 });
-        
-        
+
+            }
+        }
         /*****************************************************/
         /********* EXTERIOR INTEGRITY MODULE METHODS *********/
         /*****************************************************/
-
         private void InitializeExteriorIntegrityModule()
         {
             BW_hull.WorkerReportsProgress = true;
@@ -346,9 +395,10 @@ namespace CrewDragonHMI
         {
             while (true)
             {
-                float newHullIntegrity = ExteriorIntegrityModule.HullIntegrity - (0.01F * MovementModule.Speed);
+                float newHullIntegrity = ExteriorIntegrityModule.HullIntegrity - (0.01F * MovementModule.getSpeed());
                 ExteriorIntegrityModule.HullIntegrity = newHullIntegrity;
                 System.Threading.Thread.Sleep(1000);
+            }
         }
     }
 }
