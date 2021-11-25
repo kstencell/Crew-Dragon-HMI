@@ -156,9 +156,9 @@ namespace CrewDragonHMI
             while(true)
             {
                 Dictionary<string, int> sensorValues = new Dictionary<string, int>();
-                sensorValues["Hull"] = (int)ExteriorIntegrityModule.getHullIntegrity();
+                sensorValues["Hull"] = INTEGRATION_level--;
                 sensorValues["Fuel"] = MovementModule.getFuelLevel();
-                sensorValues["Battery"] = INTEGRATION_level--;
+                sensorValues["Battery"] = EnergyModule.getBatteryLevel();
 
                 foreach (KeyValuePair<string, int> pair in sensorValues)
                 {
