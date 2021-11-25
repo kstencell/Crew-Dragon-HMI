@@ -49,7 +49,7 @@
                     <SkewTransform/>
                     <RotateTransform Angle="-90"/>
                     <TranslateTransform/>
-                </TransformGroup>
+              </TransformGroup>
             </ProgressBar.RenderTransform>
         </ProgressBar>
         <Button Name="warpDrive" Content="Button" HorizontalAlignment="Left" Margin="400,307,0,0" VerticalAlignment="Top"/>
