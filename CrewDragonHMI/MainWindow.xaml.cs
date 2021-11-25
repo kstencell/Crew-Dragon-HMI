@@ -207,15 +207,40 @@ namespace CrewDragonHMI
 
         private void InitializeAlertModule()
         {
+            this.Dispatcher.Invoke(() =>
+            {
+                alarmButton.IsChecked = true;
+            });
+
+            BW_alert.WorkerSupportsCancellation = true;
             BW_alert.DoWork += Alert_DoWork;
-            BW_alert.RunWorkerAsync();
         }
 
-        
+        private void alarm_Checked(object sender, RoutedEventArgs e)
+        {
+            if (!BW_alert.IsBusy)
+            {
+                BW_alert.RunWorkerAsync();
+            }
+        }
+
+        private void alarm_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (BW_alert.IsBusy)
+            {
+                BW_alert.CancelAsync();
+                this.Dispatcher.Invoke(() =>
+                {
+                    alarm.Fill = Brushes.Gray;
+                });
+            }
+        }
+
+
 
         private void Alert_DoWork(object sender, DoWorkEventArgs e)
         {
-            while(true)
+            while(!BW_alert.CancellationPending)
             {
                 Dictionary<string, int> sensorValues = new Dictionary<string, int>();
                 sensorValues["Hull"] = (int) ExteriorIntegrityModule.getHullIntegrity();
@@ -233,11 +258,11 @@ namespace CrewDragonHMI
                 {
                     if (isOnAlert)
                     {
-                        alarm.Background = Brushes.Red;
+                        alarm.Fill = Brushes.Red;
                     }
                     else
                     {
-                        alarm.Background = Brushes.Green;
+                        alarm.Fill = Brushes.Green;
                     }
 
 
