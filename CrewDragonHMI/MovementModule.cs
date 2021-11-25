@@ -18,7 +18,7 @@ namespace CrewDragonHMI
 
         static MovementModule()
         {
-            setFuelLevel(25.0F);
+            setFuelLevel(100.0f);
             setSpeed(0);
             setDirection(0);
             warpDriveStatus = false;

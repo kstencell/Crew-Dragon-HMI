@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <TextBox Name="hullText" HorizontalAlignment="Left" Margin="104,127,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="63" Height="37"/>
+        <TextBox Name="hullText" HorizontalAlignment="Left" Margin="56,180,0,0" Text="Hull Integrity: 100%" TextWrapping="Wrap" VerticalAlignment="Top" Width="122" Height="37"/>
         <TextBox Name="directionText" HorizontalAlignment="Left" Margin="265,94,0,0" Text="Direction: 0 Degrees" TextWrapping="Wrap" VerticalAlignment="Top" Width="55" Height="29"/>
         <TextBox Name="speedText" HorizontalAlignment="Left" Margin="379,94,0,0" Text="Speed: 0 KM/S" TextWrapping="Wrap" VerticalAlignment="Top" Width="65" Height="29"/>
         <Slider Name="directionSlider" HorizontalAlignment="Left" Margin="274,93,0,0" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.5,0.5" Maximum="180" Minimum="-180" Value="0" Thumb.DragCompleted="DirectionSlider_DragCompleted">

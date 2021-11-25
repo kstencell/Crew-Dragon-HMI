@@ -21,7 +21,7 @@ namespace CrewDragonHMI
 
         static EnergyModule ()
         {
-            setBatteryLevel(10.0F);
+            setBatteryLevel(100.0f);
 
         }
 
@@ -45,7 +45,7 @@ namespace CrewDragonHMI
             try
             {
                 StreamWriter fileStream = new StreamWriter(batteryFilePath);
-                fileStream.WriteLine((level).ToString());
+                fileStream.WriteLine(level.ToString());
                 fileStream.Close();
             }
 
