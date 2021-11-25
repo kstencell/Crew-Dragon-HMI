@@ -140,40 +140,50 @@ namespace CrewDragonHMI
         /********** ALERT MODULE METHODS ***********/
         /*******************************************/
 
+        private static int INTEGRATION_fuelLevel;
+
         private void InitializeAlertModule()
         {
+            INTEGRATION_fuelLevel = 20;
             BW_alert.DoWork += Alert_DoWork;
             BW_alert.RunWorkerAsync();
         }
 
+        
+
         private void Alert_DoWork(object sender, DoWorkEventArgs e)
         {
-            Dictionary<string, int> sensorValues = new Dictionary<string, int>();
-            sensorValues["Hull"] = (int) ExteriorIntegrityModule.getHullIntegrity();
-            sensorValues["Fuel"] = MovementModule.getFuelLevel();
-            sensorValues["Battery"] = EnergyModule.getBatteryLevel();
-
-            foreach (KeyValuePair<string, int> pair in sensorValues)
+            while(true)
             {
-                AlertModule.ReceiveSensorValue(pair.Key, pair.Value);
+                Dictionary<string, int> sensorValues = new Dictionary<string, int>();
+                sensorValues["Hull"] = (int)ExteriorIntegrityModule.getHullIntegrity();
+                sensorValues["Fuel"] = INTEGRATION_fuelLevel;
+                INTEGRATION_fuelLevel = INTEGRATION_fuelLevel - 1;
+                sensorValues["Battery"] = EnergyModule.getBatteryLevel();
+
+                foreach (KeyValuePair<string, int> pair in sensorValues)
+                {
+                    AlertModule.ReceiveSensorValue(pair.Key, pair.Value);
+                }
+
+                bool isOnAlert = AlertModule.ReadAlert();
+
+                this.Dispatcher.Invoke(() =>
+                {
+                    if (isOnAlert)
+                    {
+                        alarm.Background = Brushes.Red;
+                    }
+                    else
+                    {
+                        alarm.Background = Brushes.Green;
+                    }
+
+
+                });
+
+                System.Threading.Thread.Sleep(1000);
             }
-
-            bool isOnAlert = AlertModule.ReadAlert();
-
-            this.Dispatcher.Invoke(() =>
-            {
-                if (isOnAlert)
-                {
-                    alarm.Background = Brushes.Red;
-                }
-                else
-                {
-                    alarm.Background = Brushes.Green;
-                }
-
-                System.Threading.Thread.Sleep(500);
-            });
-            
         }
 
 
