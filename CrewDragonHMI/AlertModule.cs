@@ -82,6 +82,8 @@ namespace CrewDragonHMI
 
         static public bool ReadAlert()
         {
+            return true;
+
             using (StreamReader sr = File.OpenText(alertFile))
             {
                 string read_line = sr.ReadLine();
