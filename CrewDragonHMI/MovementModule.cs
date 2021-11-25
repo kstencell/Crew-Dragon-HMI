@@ -8,5 +8,9 @@ namespace CrewDragonHMI
 {
     class MovementModule
     {
+        public static int getFuelLevel()
+        {
+            return 50;
+        }
     }
 }

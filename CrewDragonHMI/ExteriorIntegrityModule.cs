@@ -8,5 +8,9 @@ namespace CrewDragonHMI
 {
     class ExteriorIntegrityModule
     {
+        public static float getHullIntegrity()
+        {
+            return 50.0f;
+        }
     }
 }

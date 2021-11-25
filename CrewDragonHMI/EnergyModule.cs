@@ -8,5 +8,9 @@ namespace CrewDragonHMI
 {
     class EnergyModule
     {
+        public static int getBatteryLevel()
+        {
+            return 50;
+        }
     }
 }

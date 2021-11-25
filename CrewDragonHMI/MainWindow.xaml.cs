@@ -142,7 +142,38 @@ namespace CrewDragonHMI
 
         private void InitializeAlertModule()
         {
-            // not sure if this needs a thread
+            BW_alert.DoWork += Alert_DoWork;
+            BW_alert.RunWorkerAsync();
+        }
+
+        private void Alert_DoWork(object sender, DoWorkEventArgs e)
+        {
+            Dictionary<string, int> sensorValues = new Dictionary<string, int>();
+            sensorValues["Hull"] = (int) ExteriorIntegrityModule.getHullIntegrity();
+            sensorValues["Fuel"] = MovementModule.getFuelLevel();
+            sensorValues["Battery"] = EnergyModule.getBatteryLevel();
+
+            foreach (KeyValuePair<string, int> pair in sensorValues)
+            {
+                AlertModule.ReceiveSensorValue(pair.Key, pair.Value);
+            }
+
+            bool isOnAlert = AlertModule.ReadAlert();
+
+            this.Dispatcher.Invoke(() =>
+            {
+                if (isOnAlert)
+                {
+                    alarm.Background = Brushes.Red;
+                }
+                else
+                {
+                    alarm.Background = Brushes.Green;
+                }
+
+                System.Threading.Thread.Sleep(500);
+            });
+            
         }
 
 

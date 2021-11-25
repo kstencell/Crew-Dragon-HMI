@@ -1,5 +1,5 @@
 {
-    "BatteryThreshold": 5,
-    "HullThreshold": 15,
-    "FuelThreshold": 10
+    "Battery": 5,
+    "Hull": 15,
+    "Fuel": 10
 }

@@ -12,9 +12,9 @@ namespace CrewDragonHMI
 {
     class AlertConfig
     {
-        public int BatteryThreshold { get; set; }
-        public int HullThreshold { get; set; }
-        public int FuelThreshold { get; set; }
+        public int Battery { get; set; }
+        public int Hull { get; set; }
+        public int Fuel { get; set; }
     }
 
 
@@ -38,13 +38,16 @@ namespace CrewDragonHMI
 
             AlertConfig alertConfig = JsonSerializer.Deserialize<AlertConfig>(configText);
 
-            alertThresholds["BatteryThreshold"] = alertConfig.BatteryThreshold;
-            alertThresholds["HullThreshold"] = alertConfig.HullThreshold;
-            alertThresholds["FuelThreshold"] = alertConfig.FuelThreshold;
+            alertThresholds = new Dictionary<string, int>();
+            onAlert = new Dictionary<string, bool>();
 
-            onAlert["BatteryThreshold"] = false;
-            onAlert["HullThreshold"] = false;
-            onAlert["FuelThreshold"] = false;
+            alertThresholds["Battery"] = alertConfig.Battery;
+            alertThresholds["Hull"] = alertConfig.Hull;
+            alertThresholds["Fuel"] = alertConfig.Fuel;
+
+            onAlert["Battery"] = false;
+            onAlert["Hull"] = false;
+            onAlert["Fuel"] = false;
         }
 
         static private void UpdateAlertFile()
@@ -77,7 +80,7 @@ namespace CrewDragonHMI
             }
         }
 
-        static private bool ReadAlert()
+        static public bool ReadAlert()
         {
             using (StreamReader sr = File.OpenText(alertFile))
             {
