@@ -7,31 +7,56 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <ProgressBar x:Name="FuelIndicator" RenderTransformOrigin="0.5,0.5" Minimum="0" Maximum="100" Margin="558,167,-77,183">
-            <ProgressBar.RenderTransform>
+        <TextBox Name="hullText" HorizontalAlignment="Left" Margin="104,127,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="63" Height="37"/>
+        <TextBox Name="rotationText" HorizontalAlignment="Left" Margin="265,94,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="55" Height="29"/>
+        <TextBox Name="speedText" HorizontalAlignment="Left" Margin="379,94,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="65" Height="29"/>
+        <Slider Name="rotationChanger" HorizontalAlignment="Left" Margin="274,93,0,0" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.5,0.5">
+            <Slider.RenderTransform>
                 <TransformGroup>
-                    <ScaleTransform ScaleX="1" ScaleY="1"/>
-                    <RotateTransform Angle="-90"/>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
                     <TranslateTransform/>
                 </TransformGroup>
-            </ProgressBar.RenderTransform>
-        </ProgressBar>
-        <TextBox Name="fuelText" HorizontalAlignment="Left" Margin="655,385,0,0" Text="Fuel: 100%" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Label Content="F" HorizontalAlignment="Left" Margin="643,35,0,0" VerticalAlignment="Top" Height="53" Width="24" FontSize="36"/>
-        <Label Content="E" HorizontalAlignment="Left" Margin="643,298,0,0" VerticalAlignment="Top" Height="53" Width="24" FontSize="36"/>
-        <Slider Name="directionSlider" HorizontalAlignment="Left" Margin="163,164,0,0" VerticalAlignment="Top" Width="120" Maximum="180" Minimum="-180" Value="0" Thumb.DragCompleted="DirectionSlider_DragCompleted"/>
-        <TextBox Name="directionText" HorizontalAlignment="Left" Margin="148,199,0,0" Text="Direction: 0 Degrees" TextWrapping="Wrap" VerticalAlignment="Top" Width="183"/>
-        <Slider Name="speedSlider" HorizontalAlignment="Left" Margin="472,164,0,0" VerticalAlignment="Top" Width="120" Minimum="0" Maximum="1000" RenderTransformOrigin="0.5,0.5" Value="0" Thumb.DragCompleted="SpeedSlider_DragCompleted">
+            </Slider.RenderTransform>
+        </Slider>
+        <Slider Name="speedChanger" HorizontalAlignment="Left" Margin="402,94,0,0" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.5,0.5" ValueChanged="speedChanger_ValueChanged">
             <Slider.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Slider.RenderTransform>
+        </Slider>
+        <TextBox Name="batteryText" HorizontalAlignment="Left" Margin="692,99,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="57"/>
+        <ProgressBar Name="battery" HorizontalAlignment="Left" Height="10" Margin="625,102,0,0" VerticalAlignment="Top" Width="100" RenderTransformOrigin="0.5,0.5">
+            <ProgressBar.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
                     <SkewTransform/>
                     <RotateTransform Angle="-90"/>
                     <TranslateTransform/>
                 </TransformGroup>
-            </Slider.RenderTransform>
-        </Slider>
-        <TextBox Name="speedText" HorizontalAlignment="Left" Margin="478,258,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="Speed: 0 KM/S"/>
-        <CheckBox Name="warpDrive" Content="WARP DRIVE" HorizontalAlignment="Left" Margin="243,324,0,0" VerticalAlignment="Top" Checked="warpDrive_Checked" Unchecked="warpDrive_Unchecked"/>
+            </ProgressBar.RenderTransform>
+        </ProgressBar>
+        <TextBox Name="fuelText" HorizontalAlignment="Left" Margin="693,307,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="56"/>
+        <ProgressBar Name="fuel" HorizontalAlignment="Left" Height="10" Margin="626,300,0,0" VerticalAlignment="Top" Width="100" RenderTransformOrigin="0.5,0.5">
+            <ProgressBar.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform/>
+              </TransformGroup>
+            </ProgressBar.RenderTransform>
+        </ProgressBar>
+        <Button Name="warpDrive" Content="Button" HorizontalAlignment="Left" Margin="400,307,0,0" VerticalAlignment="Top"/>
+        <Button Name="alarm" Content="Alarm" HorizontalAlignment="Left" Margin="265,307,0,0" VerticalAlignment="Top"/>
+        <CheckBox Name="generator" HorizontalAlignment="Left" Margin="559,99,0,0" VerticalAlignment="Top" Unchecked="generator_Unchecked" Checked="generator_Checked"/>
+        <TextBox HorizontalAlignment="Left" Margin="539,137,0,0" Text="Generator" TextWrapping="Wrap" VerticalAlignment="Top" Width="64"/>
+        <CheckBox Name="shields" HorizontalAlignment="Left" Margin="559,307,0,0" VerticalAlignment="Top" Checked="shields_Checked" Unchecked="shields_Unchecked"/>
+        <TextBox Name="shieldsText" HorizontalAlignment="Left" Margin="520,342,0,0" Text="Deflector Shields" TextWrapping="Wrap" VerticalAlignment="Top" Width="102"/>
     </Grid>
 </Window>
