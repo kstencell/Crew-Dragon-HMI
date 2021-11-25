@@ -45,7 +45,7 @@ namespace CrewDragonHMI
             try
             {
                 StreamWriter fileStream = new StreamWriter(batteryFilePath);
-                fileStream.WriteLine((level).ToString());
+                fileStream.WriteLine(level.ToString());
                 fileStream.Close();
             }
 

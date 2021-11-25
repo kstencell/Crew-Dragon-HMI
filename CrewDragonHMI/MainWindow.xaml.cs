@@ -323,15 +323,6 @@ namespace CrewDragonHMI
 
         private void warpDrive_Checked(object sender, RoutedEventArgs e)
         {
-            if (!BW_warpDrive.IsBusy)
-            {
-                MovementModule.toggleWarpDrive();
-                BW_warpDrive.RunWorkerAsync();
-            }
-        }
-
-        private void warpDrive_Unchecked(object sender, RoutedEventArgs e)
-        {
             if (MovementModule.getFuelLevel() < 0.2f)
             {
                 this.Dispatcher.Invoke(() =>
@@ -342,6 +333,15 @@ namespace CrewDragonHMI
                 });
                 return;
             }
+            if (!BW_warpDrive.IsBusy)
+            {
+                MovementModule.toggleWarpDrive();
+                BW_warpDrive.RunWorkerAsync();
+            }
+        }
+
+        private void warpDrive_Unchecked(object sender, RoutedEventArgs e)
+        {
             if (BW_warpDrive.IsBusy)
             {
                 MovementModule.toggleWarpDrive();
@@ -363,10 +363,6 @@ namespace CrewDragonHMI
             BW_hull.DoWork += Hull_DoWork;
             BW_hull.ProgressChanged += Hull_ProgressChanged;
             BW_hull.RunWorkerAsync();
-
-            BW_damage.WorkerReportsProgress = false;
-            BW_damage.WorkerSupportsCancellation = true;
-            BW_damage.DoWork += Damage_DoWork;
         }
 
         // ****************
@@ -377,8 +373,8 @@ namespace CrewDragonHMI
         {
             while (true)
             {
-                float hullIntegrity = ExteriorIntegrityModule.HullIntegrity;
-                BW_hull.ReportProgress((int)hullIntegrity); // I'm casting this to an int as HullIntegrity is a float. We should probably agree on just using ints or floats
+                int hullIntegrity = ExteriorIntegrityModule.getHullIntegrity();
+                BW_hull.ReportProgress(hullIntegrity); // I'm casting this to an int as HullIntegrity is a float. We should probably agree on just using ints or floats
                 System.Threading.Thread.Sleep(250);
             }
         }
@@ -391,14 +387,9 @@ namespace CrewDragonHMI
         // ***** DAMAGE *****
         // ******************
 
-        private void Damage_DoWork(object sender, DoWorkEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            while (true)
-            {
-                float newHullIntegrity = ExteriorIntegrityModule.HullIntegrity - (0.01F * MovementModule.getSpeed());
-                ExteriorIntegrityModule.HullIntegrity = newHullIntegrity;
-                System.Threading.Thread.Sleep(1000);
-            }
+            ExteriorIntegrityModule.takeDamage();
         }
     }
 }
