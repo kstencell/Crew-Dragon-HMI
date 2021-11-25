@@ -7,10 +7,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <TextBox Name="hullText" HorizontalAlignment="Left" Margin="104,127,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="63" Height="37"/>
-        <TextBox Name="rotationText" HorizontalAlignment="Left" Margin="265,94,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="55" Height="29"/>
-        <TextBox Name="speedText" HorizontalAlignment="Left" Margin="379,94,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="65" Height="29"/>
-        <Slider Name="rotationChanger" HorizontalAlignment="Left" Margin="274,93,0,0" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.5,0.5">
+        <TextBox Name="hullText" HorizontalAlignment="Left" Margin="56,180,0,0" Text="Hull Integrity: 100%" TextWrapping="Wrap" VerticalAlignment="Top" Width="122" Height="37"/>
+        <TextBox Name="directionText" HorizontalAlignment="Left" Margin="265,94,0,0" Text="Direction: 0 Degrees" TextWrapping="Wrap" VerticalAlignment="Top" Width="55" Height="29"/>
+        <TextBox Name="speedText" HorizontalAlignment="Left" Margin="379,94,0,0" Text="Speed: 0 KM/S" TextWrapping="Wrap" VerticalAlignment="Top" Width="65" Height="29"/>
+        <Slider Name="directionSlider" HorizontalAlignment="Left" Margin="274,93,0,0" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.5,0.5" Maximum="180" Minimum="-180" Value="0" Thumb.DragCompleted="DirectionSlider_DragCompleted">
             <Slider.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -20,12 +20,12 @@
                 </TransformGroup>
             </Slider.RenderTransform>
         </Slider>
-        <Slider Name="speedChanger" HorizontalAlignment="Left" Margin="402,94,0,0" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.5,0.5" ValueChanged="speedChanger_ValueChanged">
+        <Slider Name="speedSlider" HorizontalAlignment="Left" Margin="402,94,0,0" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.5,0.5" Maximum="1000" Minimum="0" Value="0" Thumb.DragCompleted="SpeedSlider_DragCompleted">
             <Slider.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
                     <SkewTransform/>
-                    <RotateTransform Angle="90"/>
+                    <RotateTransform Angle="-90"/>
                     <TranslateTransform/>
                 </TransformGroup>
             </Slider.RenderTransform>
@@ -36,7 +36,7 @@
                 <TransformGroup>
                     <ScaleTransform/>
                     <SkewTransform/>
-                    <RotateTransform Angle="90"/>
+                    <RotateTransform Angle="-90"/>
                     <TranslateTransform/>
                 </TransformGroup>
             </ProgressBar.RenderTransform>
@@ -47,19 +47,17 @@
                 <TransformGroup>
                     <ScaleTransform/>
                     <SkewTransform/>
-                    <RotateTransform Angle="90"/>
+                    <RotateTransform Angle="-90"/>
                     <TranslateTransform/>
                 </TransformGroup>
             </ProgressBar.RenderTransform>
         </ProgressBar>
-        <Button Name="warpDrive" Content="Button" HorizontalAlignment="Left" Margin="400,307,0,0" VerticalAlignment="Top"/>
         <Button Name="alarm" Content="Alarm" HorizontalAlignment="Left" Margin="265,307,0,0" VerticalAlignment="Top"/>
         <CheckBox Name="generator" HorizontalAlignment="Left" Margin="559,99,0,0" VerticalAlignment="Top" Unchecked="generator_Unchecked" Checked="generator_Checked"/>
         <TextBox HorizontalAlignment="Left" Margin="539,137,0,0" Text="Generator" TextWrapping="Wrap" VerticalAlignment="Top" Width="64"/>
         <CheckBox Name="shields" HorizontalAlignment="Left" Margin="559,307,0,0" VerticalAlignment="Top" Checked="shields_Checked" Unchecked="shields_Unchecked"/>
         <TextBox Name="shieldsText" HorizontalAlignment="Left" Margin="520,342,0,0" Text="Deflector Shields" TextWrapping="Wrap" VerticalAlignment="Top" Width="102"/>
-
-
-
+        <CheckBox Name="warpDrive" HorizontalAlignment="Left" Margin="400,305,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.189,-2.916" Checked="warpDrive_Checked" Unchecked="warpDrive_Unchecked"/>
+        <TextBox Text="WARP DRIVE" HorizontalAlignment="Left" Margin="379,342,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
     </Grid>
 </Window>
