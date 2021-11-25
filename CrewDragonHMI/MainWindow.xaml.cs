@@ -144,7 +144,6 @@ namespace CrewDragonHMI
 
         private void InitializeAlertModule()
         {
-            INTEGRATION_level = 20;
             BW_alert.DoWork += Alert_DoWork;
             BW_alert.RunWorkerAsync();
         }
@@ -156,7 +155,7 @@ namespace CrewDragonHMI
             while(true)
             {
                 Dictionary<string, int> sensorValues = new Dictionary<string, int>();
-                sensorValues["Hull"] = INTEGRATION_level--;
+                sensorValues["Hull"] = (int) ExteriorIntegrityModule.getHullIntegrity();
                 sensorValues["Fuel"] = MovementModule.getFuelLevel();
                 sensorValues["Battery"] = EnergyModule.getBatteryLevel();
 
