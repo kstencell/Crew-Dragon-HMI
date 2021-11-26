@@ -10,10 +10,10 @@
         <TextBox Name="hullText" 
                  HorizontalAlignment="Center" 
                  VerticalAlignment="Top" 
-                 Margin="0,180,0,0" 
+                 Margin="0,150,0,0" 
                  Text="HullText" 
                  TextWrapping="Wrap" 
-                 Width="63" Height="37"/>
+                 Width="64" Height="37"/>
         <TextBox Name="rotationText" 
                  HorizontalAlignment="Center" 
                  VerticalAlignment="Top"
@@ -37,15 +37,15 @@
             </Slider.RenderTransform>
         </Slider>
         <TextBox Name="speedText" 
-                 HorizontalAlignment="Center" 
+                 HorizontalAlignment="Left" 
                  VerticalAlignment="Top"
-                 Margin="500,150,0,50" 
+                 Margin="610,186,0,0" 
                  Text="SpeedText" 
                  TextWrapping="Wrap" 
-                 Width="65" Height="29"/>
+                 Width="64" Height="29"/>
         <Slider Name="speedChanger" 
-                HorizontalAlignment="Center" 
-                Margin="580,150,0,50" 
+                HorizontalAlignment="Left" 
+                Margin="630,193,0,0" 
                 VerticalAlignment="Top" 
                 Width="120" 
                 RenderTransformOrigin="0.5,0.5" 
@@ -105,11 +105,6 @@
                 </TransformGroup>
             </ProgressBar.RenderTransform>
         </ProgressBar>
-        <Button Name="warpDrive" 
-                Content="Warp Drive" 
-                HorizontalAlignment="Right" 
-                VerticalAlignment="Top"
-                Margin="0,50,75,0" />
 
         <ToggleButton Name="alarm"  
                       HorizontalAlignment="Center" 
@@ -149,7 +144,7 @@
                HorizontalAlignment="Center" 
                Margin="-450,100,0,50" 
                VerticalAlignment="Top"/>
-
+        <!--
         <ToggleButton Name="generator" 
                       HorizontalAlignment="Center" 
                       VerticalAlignment="Top" 
@@ -180,13 +175,15 @@
                 </Style>
             </ToggleButton.Style>
         </ToggleButton>
+        -->
         <Label Name="generatorText" 
                HorizontalAlignment="Center" 
                VerticalAlignment="Top" 
                Margin="120,280,0,0"
                Content="Generator"/>
 
-        <ToggleButton Name="shields" 
+        <!--
+            <ToggleButton Name="shields" 
                       HorizontalAlignment="Center" 
                       VerticalAlignment="Top" 
                       Margin="-120,260,0,0" 
@@ -216,6 +213,7 @@
                 </Style>
             </ToggleButton.Style>
         </ToggleButton>
+            -->
         <Label Name="shieldsText"
                HorizontalAlignment="Center" 
                VerticalAlignment="Top" 
@@ -223,5 +221,9 @@
                Width="102"
                Content="Deflector Shields"
                HorizontalContentAlignment="Center"/>
+        <CheckBox HorizontalAlignment="Left" Margin="310,222,0,0" VerticalAlignment="Top" Height="62" Width="62" Checked="shields_Checked" Unchecked="shields_Unchecked"/>
+        <CheckBox HorizontalAlignment="Left" Margin="429,222,0,0" VerticalAlignment="Top" Height="62" Width="62" Checked="generator_Checked" Unchecked="generator_Unchecked"/>
+        <CheckBox HorizontalAlignment="Left" Margin="660,32,0,0" VerticalAlignment="Top" Height="62" Width="62" Checked="warpDrive_Checked" Unchecked="warpDrive_Unchecked"/>
+        <TextBox HorizontalAlignment="Left" Margin="652,104,0,0" Text="WARP DRIVE" TextWrapping="Wrap" VerticalAlignment="Top" Width="78"/>
     </Grid>
 </Window>
