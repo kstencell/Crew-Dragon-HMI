@@ -203,9 +203,73 @@ namespace CrewDragonHMI
         /********** ALERT MODULE METHODS ***********/
         /*******************************************/
 
+        private static int INTEGRATION_level;
+
         private void InitializeAlertModule()
         {
-            // not sure if this needs a thread
+            this.Dispatcher.Invoke(() =>
+            {
+                alarmButton.IsChecked = true;
+            });
+
+            BW_alert.WorkerSupportsCancellation = true;
+            BW_alert.DoWork += Alert_DoWork;
+        }
+
+        private void alarm_Checked(object sender, RoutedEventArgs e)
+        {
+            if (!BW_alert.IsBusy)
+            {
+                BW_alert.RunWorkerAsync();
+            }
+        }
+
+        private void alarm_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (BW_alert.IsBusy)
+            {
+                BW_alert.CancelAsync();
+                this.Dispatcher.Invoke(() =>
+                {
+                    alarm.Fill = Brushes.Gray;
+                });
+            }
+        }
+
+
+
+        private void Alert_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while(!BW_alert.CancellationPending)
+            {
+                Dictionary<string, int> sensorValues = new Dictionary<string, int>();
+                sensorValues["Hull"] = (int) ExteriorIntegrityModule.getHullIntegrity();
+                sensorValues["Fuel"] = (int) MovementModule.getFuelLevel();
+                sensorValues["Battery"] = EnergyModule.getBatteryLevel();
+
+                foreach (KeyValuePair<string, int> pair in sensorValues)
+                {
+                    AlertModule.ReceiveSensorValue(pair.Key, pair.Value);
+                }
+
+                bool isOnAlert = AlertModule.ReadAlert();
+
+                this.Dispatcher.Invoke(() =>
+                {
+                    if (isOnAlert)
+                    {
+                        alarm.Fill = Brushes.Red;
+                    }
+                    else
+                    {
+                        alarm.Fill = Brushes.Green;
+                    }
+
+
+                });
+
+                System.Threading.Thread.Sleep(1000);
+            }
         }
 
 

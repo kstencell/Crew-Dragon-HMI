@@ -52,12 +52,13 @@
                 </TransformGroup>
             </ProgressBar.RenderTransform>
         </ProgressBar>
-        <Button Name="alarm" Content="Alarm" HorizontalAlignment="Left" Margin="265,307,0,0" VerticalAlignment="Top"/>
+        <ToggleButton Name="alarmButton" Content="Alarm" HorizontalAlignment="Left" Margin="265,307,0,0" VerticalAlignment="Top" Checked="alarm_Checked" Unchecked="alarm_Unchecked"/>
         <CheckBox Name="generator" HorizontalAlignment="Left" Margin="559,99,0,0" VerticalAlignment="Top" Unchecked="generator_Unchecked" Checked="generator_Checked"/>
         <TextBox HorizontalAlignment="Left" Margin="539,137,0,0" Text="Generator" TextWrapping="Wrap" VerticalAlignment="Top" Width="64"/>
         <CheckBox Name="shields" HorizontalAlignment="Left" Margin="559,307,0,0" VerticalAlignment="Top" Checked="shields_Checked" Unchecked="shields_Unchecked"/>
         <TextBox Name="shieldsText" HorizontalAlignment="Left" Margin="520,342,0,0" Text="Deflector Shields" TextWrapping="Wrap" VerticalAlignment="Top" Width="102"/>
         <CheckBox Name="warpDrive" HorizontalAlignment="Left" Margin="400,305,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.189,-2.916" Checked="warpDrive_Checked" Unchecked="warpDrive_Unchecked"/>
         <TextBox Text="WARP DRIVE" HorizontalAlignment="Left" Margin="379,342,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Rectangle Name="alarm" HorizontalAlignment="Left" Height="25" Margin="265,268,0,0" Stroke="Black"  VerticalAlignment="Top" Width="35"/>
     </Grid>
 </Window>
