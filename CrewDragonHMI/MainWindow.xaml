@@ -3,9 +3,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:my="clr-namespace:CrewDragonHMI"
         xmlns:local="clr-namespace:CrewDragonHMI"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <my:ValueAngleConverter x:Key="valueAngleConverter"/>
+        <my:ValueTextConverter x:Key="valueTextConverter"/>
+    </Window.Resources>
     <Grid>
         <TextBox Name="hullText" HorizontalAlignment="Left" Margin="104,127,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="63" Height="37"/>
         <TextBox Name="rotationText" HorizontalAlignment="Left" Margin="265,94,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="55" Height="29"/>
@@ -58,5 +63,48 @@
         <TextBox HorizontalAlignment="Left" Margin="539,137,0,0" Text="Generator" TextWrapping="Wrap" VerticalAlignment="Top" Width="64"/>
         <CheckBox Name="shields" HorizontalAlignment="Left" Margin="559,307,0,0" VerticalAlignment="Top" Checked="shields_Checked" Unchecked="shields_Unchecked"/>
         <TextBox Name="shieldsText" HorizontalAlignment="Left" Margin="520,342,0,0" Text="Deflector Shields" TextWrapping="Wrap" VerticalAlignment="Top" Width="102"/>
+
+        <Grid Height="150" Width="150" Margin="36,198,564,36">
+            <Slider Name="knob">
+                <Slider.Template>
+                    <ControlTemplate>
+                        <Viewbox>
+                            <Canvas Width="300" Height="300" Margin="5">
+                                <Ellipse Fill="LightBlue" Width="300" Height="300" Canvas.Left="0" Canvas.Top="0" 
+                                    Stroke="Black" StrokeThickness="10"
+                                    MouseLeftButtonUp="Ellipse_MouseLeftButtonUp"
+                                    MouseMove="Ellipse_MouseMove"/>
+                                <Ellipse Fill="Black" Width="60" Height="60" Canvas.Left="120" Canvas.Top="120"/>
+                                <Canvas>
+                                    <Line Stroke="Red" StrokeThickness="5" X1="150" Y1="150" X2="150" Y2="10"
+                                        MouseLeftButtonUp="Ellipse_MouseLeftButtonUp"/>
+                                    <Ellipse Fill="Red" Width="20" Height="20" Canvas.Left="140" Canvas.Top="0" 
+                                        MouseLeftButtonDown="Ellipse_MouseLeftButtonDown"
+                                        MouseLeftButtonUp="Ellipse_MouseLeftButtonUp">
+                                        <Ellipse.ToolTip>
+                                            <ToolTip>
+                                                <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                                                    Path="Value" Converter="{StaticResource valueTextConverter}"/>
+                                            </ToolTip>
+                                        </Ellipse.ToolTip>
+                                    </Ellipse>
+                                    <Canvas.RenderTransform>
+                                        <RotateTransform CenterX="150" CenterY="150">
+                                            <RotateTransform.Angle>
+                                                <MultiBinding Converter="{StaticResource valueAngleConverter}">
+                                                    <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Value"/>
+                                                    <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Minimum"/>
+                                                    <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Maximum"/>
+                                                </MultiBinding>
+                                            </RotateTransform.Angle>
+                                        </RotateTransform>
+                                    </Canvas.RenderTransform>
+                                </Canvas>
+                            </Canvas>
+                        </Viewbox>
+                    </ControlTemplate>
+                </Slider.Template>
+            </Slider>
+        </Grid>
     </Grid>
 </Window>
