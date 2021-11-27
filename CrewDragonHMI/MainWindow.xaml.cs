@@ -272,152 +272,7 @@ namespace CrewDragonHMI
         }
 
 
-        /*******************************************/
-        /********* MOVEMENT MODULE METHODS *********/
-        /*******************************************/
-        private void InitializeMovementModule()
-        {
-            BW_fuel.WorkerReportsProgress = true;
-            BW_fuel.DoWork += Fuel_DoWork;
-            BW_fuel.ProgressChanged += Fuel_ProgressChanged;
-            BW_fuel.RunWorkerAsync();
-
-            BW_warpDrive.WorkerReportsProgress = false;
-            BW_warpDrive.WorkerSupportsCancellation = true;
-            BW_warpDrive.DoWork += WarpDrive_DoWork;
-        }
-
-        //******************************
-        //********** FUEL **************
-        //******************************
-        private void Fuel_DoWork(object sender, DoWorkEventArgs e)
-        {
-            while (true)
-            {
-                float fuelLevel = MovementModule.getFuelLevel();
-                BW_fuel.ReportProgress((int)fuelLevel);
-                Thread.Sleep(250);
-            }
-        }
-
-        private void Fuel_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            fuel.Value = e.ProgressPercentage;
-
-            fuelText.Text = "FUEL: " + e.ProgressPercentage.ToString() + "%";
-        }
-
-
-        //******************************
-        //********** SPEED *************
-        //******************************
-        private void SpeedSlider_DragCompleted(object sender, DragCompletedEventArgs e)
-        {
-            if (!MovementModule.getWarpDriveStatus())
-            {
-                if (MovementModule.requestSpeedChange((int)speedSlider.Value))
-                {
-                    speedText.Text = "Speed: " + (int)speedSlider.Value + " KM/S";
-                }
-                else
-                {
-                    speedSlider.Value = MovementModule.getSpeed();
-                    speedText.Text = "Speed: " + (int)speedSlider.Value + " KM/S";
-                }
-            }
-            else
-            {
-                speedSlider.Value = MovementModule.getSpeed();
-                speedText.Text = "Speed: " + (int)speedSlider.Value + " KM/S";
-            }
-        }
-
-        //******************************
-        //******** DIRECTION ***********
-        //******************************
-        /*private void DirectionSlider_DragCompleted(object sender, DragCompletedEventArgs e)
-        {
-            if (!MovementModule.getWarpDriveStatus())
-            {
-                if (MovementModule.requestDirectionChange((int)directionSlider.Value))
-                {
-                    directionText.Text = "Direction: " + (int)directionSlider.Value + " Degrees";
-                }
-                else
-                {
-                    directionSlider.Value = MovementModule.getDirection();
-                    directionText.Text = "Direction: " + (int)directionSlider.Value + " Degrees";
-                }
-            }
-            else
-            {
-                directionSlider.Value = MovementModule.getDirection();
-                directionText.Text = "Direction: " + (int)directionSlider.Value + " Degrees";
-            }
-        }*/
-
-        //******************************
-        //********* WARP DRIVE *********
-        //******************************
-        private void WarpDrive_DoWork(object sender, DoWorkEventArgs e)
-        {
-            while (!BW_warpDrive.CancellationPending)
-            {
-                int previousSpeed = MovementModule.getSpeed();
-
-                if (MovementModule.requestFuel(0.2f))
-                {
-                    this.Dispatcher.Invoke(() =>
-                    {
-                        speedSlider.Value = speedSlider.Maximum;
-                        speedText.Text = "Speed: LIGHT SPEED";
-                    });
-                }
-                else
-                {
-                    this.Dispatcher.Invoke(() =>
-                    {
-                        warpDrive.IsChecked = false;
-                    });
-                    
-                }
-                System.Threading.Thread.Sleep(200);
-            }
-        }
-
-        private void warpDrive_Checked(object sender, RoutedEventArgs e)
-        {
-            if (MovementModule.getFuelLevel() < 0.2f)
-            {
-                this.Dispatcher.Invoke(() =>
-                {
-                    warpDrive.IsChecked = false;
-                    speedSlider.Value = MovementModule.getSpeed();
-                    speedText.Text = "SPEED: " + (int)speedSlider.Value + " KM/S";
-                });
-                return;
-            }
-            if (!BW_warpDrive.IsBusy)
-            {
-                MovementModule.toggleWarpDrive();
-                BW_warpDrive.RunWorkerAsync();
-            }
-        }
-
-        private void warpDrive_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (BW_warpDrive.IsBusy)
-            {
-                MovementModule.toggleWarpDrive();
-                BW_warpDrive.CancelAsync();
-                this.Dispatcher.Invoke(() =>
-                {
-                    speedSlider.Value = MovementModule.getSpeed();
-                    speedText.Text = "SPEED: " + (int)speedSlider.Value + " KM/S";
-                });
-
-            }
-        }
+        
         /*****************************************************/
         /********* EXTERIOR INTEGRITY MODULE METHODS *********/
         /*****************************************************/
@@ -479,10 +334,132 @@ namespace CrewDragonHMI
 
         }
 
-        // ******************
-        // ****** DIAL ******
-        // ******************
+        /*******************************************/
+        /********* MOVEMENT MODULE METHODS *********/
+        /*******************************************/
+        private void InitializeMovementModule()
+        {
+            BW_fuel.WorkerReportsProgress = true;
+            BW_fuel.DoWork += Fuel_DoWork;
+            BW_fuel.ProgressChanged += Fuel_ProgressChanged;
+            BW_fuel.RunWorkerAsync();
 
+            BW_warpDrive.WorkerReportsProgress = false;
+            BW_warpDrive.WorkerSupportsCancellation = true;
+            BW_warpDrive.DoWork += WarpDrive_DoWork;
+        }
+
+        //******************************
+        //********** FUEL **************
+        //******************************
+        private void Fuel_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while (true)
+            {
+                float fuelLevel = MovementModule.getFuelLevel();
+                BW_fuel.ReportProgress((int)fuelLevel);
+                Thread.Sleep(250);
+            }
+        }
+
+        private void Fuel_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            fuel.Value = e.ProgressPercentage;
+
+            fuelText.Text = "FUEL: " + e.ProgressPercentage.ToString() + "%";
+        }
+
+
+        //******************************
+        //********** SPEED *************
+        //******************************
+        private void SpeedSlider_DragCompleted(object sender, DragCompletedEventArgs e)
+        {
+            if (!MovementModule.getWarpDriveStatus())
+            {
+                if (MovementModule.requestSpeedChange((int)speedSlider.Value))
+                {
+                    speedText.Text = "Speed: " + (int)speedSlider.Value + " KM/S";
+                }
+                else
+                {
+                    speedSlider.Value = MovementModule.getSpeed();
+                    speedText.Text = "Speed: " + (int)speedSlider.Value + " KM/S";
+                }
+            }
+            else
+            {
+                speedSlider.Value = MovementModule.getSpeed();
+                speedText.Text = "Speed: " + (int)speedSlider.Value + " KM/S";
+            }
+        }
+
+        //******************************
+        //********* WARP DRIVE *********
+        //******************************
+        private void WarpDrive_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while (!BW_warpDrive.CancellationPending)
+            {
+                int previousSpeed = MovementModule.getSpeed();
+
+                if (MovementModule.requestFuel(0.2f))
+                {
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        speedSlider.Value = speedSlider.Maximum;
+                        speedText.Text = "Speed: LIGHT SPEED";
+                    });
+                }
+                else
+                {
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        warpDrive.IsChecked = false;
+                    });
+
+                }
+                System.Threading.Thread.Sleep(200);
+            }
+        }
+
+        private void warpDrive_Checked(object sender, RoutedEventArgs e)
+        {
+            if (MovementModule.getFuelLevel() < 0.2f)
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    warpDrive.IsChecked = false;
+                    speedSlider.Value = MovementModule.getSpeed();
+                    speedText.Text = "SPEED: " + (int)speedSlider.Value + " KM/S";
+                });
+                return;
+            }
+            if (!BW_warpDrive.IsBusy)
+            {
+                MovementModule.toggleWarpDrive();
+                BW_warpDrive.RunWorkerAsync();
+            }
+        }
+
+        private void warpDrive_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (BW_warpDrive.IsBusy)
+            {
+                MovementModule.toggleWarpDrive();
+                BW_warpDrive.CancelAsync();
+                this.Dispatcher.Invoke(() =>
+                {
+                    speedSlider.Value = MovementModule.getSpeed();
+                    speedText.Text = "SPEED: " + (int)speedSlider.Value + " KM/S";
+                });
+
+            }
+        }
+
+        // ***********************
+        // ****** DIRECTION ******
+        // ***********************
 
         private bool _isPressed = false;
         private Canvas _templateCanvas = null;
