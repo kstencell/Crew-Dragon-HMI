@@ -202,44 +202,42 @@ namespace CrewDragonHMI
         /********** ALERT MODULE METHODS ***********/
         /*******************************************/
 
-        private static int INTEGRATION_level;
-
         private void InitializeAlertModule()
         {
             this.Dispatcher.Invoke(() =>
             {
                 alarm.IsChecked = true;
+                alarm.IsEnabled = false;
             });
 
-            BW_alert.WorkerSupportsCancellation = true;
             BW_alert.DoWork += Alert_DoWork;
+            BW_alert.RunWorkerAsync();
         }
 
+        // Alarm toggle button is only active during active alerts
         private void alarm_Checked(object sender, RoutedEventArgs e)
         {
-            if (!BW_alert.IsBusy)
+            this.Dispatcher.Invoke(() =>
             {
-                BW_alert.RunWorkerAsync();
-            }
+                alarm.Background = Brushes.Red;
+                alarmText.Foreground = Brushes.White;
+            });
         }
 
         private void alarm_Unchecked(object sender, RoutedEventArgs e)
         {
-            if (BW_alert.IsBusy)
+            this.Dispatcher.Invoke(() =>
             {
-                BW_alert.CancelAsync();
-                this.Dispatcher.Invoke(() =>
-                {
-                    alarm.Background = Brushes.LightGray;
-                });
-            }
+                alarm.Background = Brushes.Gray;
+                alarmText.Foreground = Brushes.Black;
+            });
         }
 
 
 
         private void Alert_DoWork(object sender, DoWorkEventArgs e)
         {
-            while(!BW_alert.CancellationPending)
+            while(true)
             {
                 Dictionary<string, int> sensorValues = new Dictionary<string, int>();
                 sensorValues["Hull"] = (int) ExteriorIntegrityModule.getHullIntegrity();
@@ -253,15 +251,41 @@ namespace CrewDragonHMI
 
                 bool isOnAlert = AlertModule.ReadAlert();
 
+
+
                 this.Dispatcher.Invoke(() =>
                 {
                     if (isOnAlert)
                     {
-                        alarm.Background = Brushes.Red;
+                        if (!alarm.IsEnabled) // Enable dismissal if possible
+                        {
+                            alarm.IsEnabled = true;
+                        }
+
+                        this.Dispatcher.Invoke(() =>
+                        {
+                            alarmText.Content = "SHIP STATUS: ALERT";
+                            
+                            if ((bool) alarm.IsChecked)
+                            {
+                                alarm.Background = Brushes.Red;
+                            }
+                            else
+                            {
+                                alarm.Background = Brushes.Gray;
+                            }
+                            
+                        });
                     }
                     else
                     {
+                        alarm.IsEnabled = false;
+                        alarm.IsChecked = true; // Reset "snooze"
                         alarm.Background = Brushes.Green;
+
+                        alarmText.Content = "SHIP STATUS: FUNCTIONAL";
+                        alarmText.Foreground = Brushes.White;
+ 
                     }
 
 
@@ -379,18 +403,18 @@ namespace CrewDragonHMI
             {
                 if (MovementModule.requestSpeedChange((int)speedSlider.Value))
                 {
-                    speedText.Text = "Speed: " + (int)speedSlider.Value + " KM/S";
+                    speedText.Text = "SPEED: " + (int)speedSlider.Value + " KM/S";
                 }
                 else
                 {
                     speedSlider.Value = MovementModule.getSpeed();
-                    speedText.Text = "Speed: " + (int)speedSlider.Value + " KM/S";
+                    speedText.Text = "SPEED: " + (int)speedSlider.Value + " KM/S";
                 }
             }
             else
             {
                 speedSlider.Value = MovementModule.getSpeed();
-                speedText.Text = "Speed: " + (int)speedSlider.Value + " KM/S";
+                speedText.Text = "SPEED: " + (int)speedSlider.Value + " KM/S";
             }
         }
 

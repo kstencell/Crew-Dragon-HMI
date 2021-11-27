@@ -39,7 +39,7 @@
                  HorizontalAlignment="Left" 
                  VerticalAlignment="Top"
                  Margin="532,330,0,0" 
-                 Text="SPEED: 1000 KM/S" 
+                 Text="SPEED: 0 KM/S" 
                  TextWrapping="Wrap" 
                  Width="258" Height="36"  Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Normal" FontSize="32" FontFamily="Bahnschrift SemiBold SemiCondensed" TextAlignment="Left" IsReadOnly="True" IsInactiveSelectionHighlightEnabled="True" AllowDrop="False" Focusable="False" IsHitTestVisible="False" IsTabStop="False"/>
         <Slider Name="speedSlider"
@@ -89,7 +89,9 @@
         <ToggleButton Name="alarm"
                       Height="40"
                       Width="500"
-                      Margin="0,-495,0,0">
+                      Margin="0,-495,0,0"
+                      Checked="alarm_Checked"
+                      Unchecked="alarm_Unchecked">
             <ToggleButton.Style>
                 <Style TargetType="ToggleButton">
                     <Setter Property="Template">
@@ -103,16 +105,10 @@
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
-                    <Setter Property="Background" Value="LightGray" />
-                    <Style.Triggers>
-                        <Trigger Property="IsChecked" Value="True">
-                            <Setter Property="Background"  Value="Red" />
-                        </Trigger>
-                    </Style.Triggers>
                 </Style>
             </ToggleButton.Style>
-            <Label Content="SHIP STATUS: FUNCTIONAL" 
-               FontFamily="Bahnschrift SemiBold SemiCondensed" IsHitTestVisible="False" FontSize="16"
+            <Label Name="alarmText" Content="" 
+               FontFamily="Bahnschrift SemiBold SemiCondensed" IsHitTestVisible="False" FontSize="16"  Foreground="Black"
                
                Height="25" Width="172"
                
