@@ -403,18 +403,18 @@ namespace CrewDragonHMI
             {
                 if (MovementModule.requestSpeedChange((int)speedSlider.Value))
                 {
-                    speedText.Text = "Speed: " + (int)speedSlider.Value + " KM/S";
+                    speedText.Text = "SPEED: " + (int)speedSlider.Value + " KM/S";
                 }
                 else
                 {
                     speedSlider.Value = MovementModule.getSpeed();
-                    speedText.Text = "Speed: " + (int)speedSlider.Value + " KM/S";
+                    speedText.Text = "SPEED: " + (int)speedSlider.Value + " KM/S";
                 }
             }
             else
             {
                 speedSlider.Value = MovementModule.getSpeed();
-                speedText.Text = "Speed: " + (int)speedSlider.Value + " KM/S";
+                speedText.Text = "SPEED: " + (int)speedSlider.Value + " KM/S";
             }
         }
 
