@@ -521,7 +521,7 @@ namespace CrewDragonHMI
 
                 this.Dispatcher.Invoke(() =>
                 {
-                    rotationText.Text = "DIRECTION: " + ((int)((angle * 180) / Math.PI)).ToString() + "°";
+                    rotationText.Text = "DIRECTION: " +  ((int)(angle * 180.0 / Math.PI)).ToString() + "°";
                 });
             }
         }
