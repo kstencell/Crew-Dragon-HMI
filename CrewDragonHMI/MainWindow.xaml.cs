@@ -95,7 +95,7 @@ namespace CrewDragonHMI
         private void Battery_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             battery.Value = e.ProgressPercentage;
-            batteryText.Text = "Battery Level: " + e.ProgressPercentage.ToString() + "%";
+            batteryText.Text = "BATTERY: " + e.ProgressPercentage.ToString() + "%";
         }
 
         // *****************
@@ -303,7 +303,8 @@ namespace CrewDragonHMI
         private void Fuel_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             fuel.Value = e.ProgressPercentage;
-            fuelText.Text = "Fuel: " + e.ProgressPercentage.ToString() + "%";
+
+            fuelText.Text = "FUEL: " + e.ProgressPercentage.ToString() + "%";
         }
 
 
@@ -447,7 +448,7 @@ namespace CrewDragonHMI
         }
         private void Hull_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            hullText.Text = "Hull Integrity: " + e.ProgressPercentage.ToString() + "%";
+            hullText.Text = e.ProgressPercentage.ToString() + "%";
         }
 
         // ******************
@@ -516,7 +517,7 @@ namespace CrewDragonHMI
 
                 this.Dispatcher.Invoke(() =>
                 {
-                    rotationText.Text = ((int)((angle * 180) / Math.PI)).ToString();
+                    rotationText.Text = "DIRECTION: " + ((int)((angle * 180) / Math.PI)).ToString() + "°";
                 });
             }
         }
