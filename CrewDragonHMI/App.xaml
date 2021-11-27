@@ -69,6 +69,10 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            <Style TargetType="ProgressBar">
+                <Setter Property="BorderThickness" Value="5"></Setter>
+                <Setter Property="Padding" Value="5"></Setter>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

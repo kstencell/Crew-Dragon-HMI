@@ -6,4 +6,8 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="Copy /Y &quot;$(ProjectDir)alertConfig.json&quot; &quot;$(TargetDir)alertConfig.json&quot;" />
+  </Target>
+
 </Project>
