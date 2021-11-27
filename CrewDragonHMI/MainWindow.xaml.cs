@@ -208,7 +208,7 @@ namespace CrewDragonHMI
         {
             this.Dispatcher.Invoke(() =>
             {
-                alarmButton.IsChecked = true;
+                alarm.IsChecked = true;
             });
 
             BW_alert.WorkerSupportsCancellation = true;
@@ -230,7 +230,7 @@ namespace CrewDragonHMI
                 BW_alert.CancelAsync();
                 this.Dispatcher.Invoke(() =>
                 {
-                    alarm.Fill = Brushes.Gray;
+                    alarm.Background = Brushes.LightGray;
                 });
             }
         }
@@ -257,11 +257,11 @@ namespace CrewDragonHMI
                 {
                     if (isOnAlert)
                     {
-                        alarm.Fill = Brushes.Red;
+                        alarm.Background = Brushes.Red;
                     }
                     else
                     {
-                        alarm.Fill = Brushes.Green;
+                        alarm.Background = Brushes.Green;
                     }
 
 
@@ -335,7 +335,7 @@ namespace CrewDragonHMI
         //******************************
         //******** DIRECTION ***********
         //******************************
-        private void DirectionSlider_DragCompleted(object sender, DragCompletedEventArgs e)
+        /*private void DirectionSlider_DragCompleted(object sender, DragCompletedEventArgs e)
         {
             if (!MovementModule.getWarpDriveStatus())
             {
@@ -354,7 +354,7 @@ namespace CrewDragonHMI
                 directionSlider.Value = MovementModule.getDirection();
                 directionText.Text = "Direction: " + (int)directionSlider.Value + " Degrees";
             }
-        }
+        }*/
 
         //******************************
         //********* WARP DRIVE *********
@@ -393,7 +393,7 @@ namespace CrewDragonHMI
                 {
                     warpDrive.IsChecked = false;
                     speedSlider.Value = MovementModule.getSpeed();
-                    speedText.Text = "Speed: " + (int)speedSlider.Value + " KM/S";
+                    speedText.Text = "SPEED: " + (int)speedSlider.Value + " KM/S";
                 });
                 return;
             }
@@ -413,7 +413,7 @@ namespace CrewDragonHMI
                 this.Dispatcher.Invoke(() =>
                 {
                     speedSlider.Value = MovementModule.getSpeed();
-                    speedText.Text = "Speed: " + (int)speedSlider.Value + " KM/S";
+                    speedText.Text = "SPEED: " + (int)speedSlider.Value + " KM/S";
                 });
 
             }
@@ -490,7 +490,10 @@ namespace CrewDragonHMI
         private void Ellipse_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             //Enable moving mouse to change the value.
-            _isPressed = true;
+            if (!MovementModule.getWarpDriveStatus())
+            {
+                _isPressed = true;
+            }
         }
 
         private void Ellipse_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -520,16 +523,6 @@ namespace CrewDragonHMI
                     rotationText.Text = "DIRECTION: " + ((int)((angle * 180) / Math.PI)).ToString() + "°";
                 });
             }
-        }
-
-        private void warpDrive_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void warpDrive_Unchecked(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 
