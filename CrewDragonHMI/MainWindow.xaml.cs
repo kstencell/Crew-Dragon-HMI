@@ -463,6 +463,7 @@ namespace CrewDragonHMI
             {
                 MovementModule.toggleWarpDrive();
                 BW_warpDrive.RunWorkerAsync();
+                speedSlider.IsEnabled = false;
             }
         }
 
@@ -476,6 +477,7 @@ namespace CrewDragonHMI
                 {
                     speedSlider.Value = MovementModule.getSpeed();
                     speedText.Text = "SPEED: " + (int)speedSlider.Value + " KM/S";
+                    speedSlider.IsEnabled = true;
                 });
 
             }
