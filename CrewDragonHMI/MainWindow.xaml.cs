@@ -202,8 +202,6 @@ namespace CrewDragonHMI
         /********** ALERT MODULE METHODS ***********/
         /*******************************************/
 
-        private static int INTEGRATION_level;
-
         private void InitializeAlertModule()
         {
             this.Dispatcher.Invoke(() =>
