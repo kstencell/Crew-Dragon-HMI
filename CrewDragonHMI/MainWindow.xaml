@@ -180,8 +180,8 @@
                 <AccessText TextWrapping="Wrap" Text="HULL INTEGRITY COMPROMISED. &#10;&#10; EVACUATE NOW." TextAlignment="Center"/>
             </Label.Content>
         </Label>
-        <Button Name="toggleAlarmButton" HorizontalAlignment="Left" Margin="700,24,0,0" VerticalAlignment="Top" Visibility="Visible" Click="toggleAlarmButton_Click" Grid.Column="1">
-            <TextBox Name="toggleAlarmText" HorizontalAlignment="Left" Text="MUTE ALARM" Width="70" TextWrapping="Wrap" HorizontalContentAlignment="Center" FontFamily="Bahnschrift SemiBold SemiCondensed" FontSize="15" IsHitTestVisible="False" Background="{x:Null}" BorderBrush="{x:Null}" />
+        <Button Name="toggleAlarmButton" HorizontalAlignment="Left" Margin="700,23,0,0" VerticalAlignment="Top" Visibility="Visible" Click="toggleAlarmButton_Click" Grid.Column="1">
+            <TextBox Name="toggleAlarmText" HorizontalAlignment="Left" Text="MASK ALARM" Width="70" TextWrapping="Wrap" HorizontalContentAlignment="Center" FontFamily="Bahnschrift SemiBold SemiCondensed" FontSize="15" IsHitTestVisible="False" Background="{x:Null}" BorderBrush="{x:Null}" />
         </Button>
     </Grid>
 </Window>
