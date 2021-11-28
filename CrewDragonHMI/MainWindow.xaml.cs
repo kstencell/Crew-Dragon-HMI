@@ -285,7 +285,7 @@ namespace CrewDragonHMI
                     {
                         alarm.IsEnabled = false;
                         alarm.IsChecked = true; // Reset "snooze"
-                        alarm.Background = Brushes.Gray;
+                        alarm.Background = Brushes.Green;
 
                         alarmText.Content = "SHIP STATUS: FUNCTIONAL";
                         alarmText.Foreground = Brushes.White;
@@ -412,6 +412,15 @@ namespace CrewDragonHMI
         {
             fuel.Value = e.ProgressPercentage;
 
+            if (e.ProgressPercentage <= 0)
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    speedSlider.Value = 0;
+                    speedSlider.IsEnabled = false;
+                });
+            }
+
             fuelText.Text = "FUEL: " + e.ProgressPercentage.ToString() + "%";
         }
 
@@ -499,7 +508,12 @@ namespace CrewDragonHMI
                 {
                     speedSlider.Value = MovementModule.getSpeed();
                     speedText.Text = "SPEED: " + (int)speedSlider.Value + " KM/S";
-                    speedSlider.IsEnabled = true;
+
+                    if (MovementModule.getFuelLevel() > 0.0f)
+                    {
+                        speedSlider.IsEnabled = true;
+                    }
+                        
                 });
 
             }
