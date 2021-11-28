@@ -173,6 +173,12 @@
                 </Slider.Template>
             </Slider>
         </Grid>
+        <Label Name="evacuateText" HorizontalAlignment="Center" Height="550" Margin="0,0,0,0" VerticalAlignment="Center" Width="750" Background="DarkRed" Foreground="White"
+               FontSize="72" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Visibility="Hidden" FontFamily="Bahnschrift SemiBold SemiCondensed">
+            <Label.Content>
+                <AccessText TextWrapping="Wrap" Text="HULL INTEGRITY COMPROMISED. &#10;&#10; EVACUATE NOW." TextAlignment="Center"/>
+            </Label.Content>
+        </Label>
 
     </Grid>
 </Window>
