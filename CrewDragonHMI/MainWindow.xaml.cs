@@ -390,6 +390,15 @@ namespace CrewDragonHMI
         {
             fuel.Value = e.ProgressPercentage;
 
+            if (e.ProgressPercentage <= 0)
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    speedSlider.Value = 0;
+                    speedSlider.IsEnabled = false;
+                });
+            }
+
             fuelText.Text = "FUEL: " + e.ProgressPercentage.ToString() + "%";
         }
 
