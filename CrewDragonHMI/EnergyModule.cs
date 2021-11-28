@@ -21,7 +21,7 @@ namespace CrewDragonHMI
 
         static EnergyModule ()
         {
-            setBatteryLevel(10.0f);
+            setBatteryLevel(100.0f);
 
         }
 
