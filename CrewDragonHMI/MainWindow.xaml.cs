@@ -315,6 +315,7 @@ namespace CrewDragonHMI
                     else
                     {
                         toggleAlarmButton.Visibility = Visibility.Hidden;
+                        toggleAlarmText.Text = "MASK ALARM";
                         alarm.IsChecked = true; // Reset "snooze"
                         alarm.Background = Brushes.Green;
 

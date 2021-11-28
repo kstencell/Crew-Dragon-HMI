@@ -115,7 +115,7 @@
                
                />
         </ToggleButton>
-        
+
         <Label Name="shieldsText"
                HorizontalAlignment="Left" 
                VerticalAlignment="Top" 
@@ -174,14 +174,12 @@
                 </Slider.Template>
             </Slider>
         </Grid>
-        <Label Name="evacuateText" HorizontalAlignment="Center" Height="550" Margin="0,0,0,0" VerticalAlignment="Center" Width="750" Background="DarkRed" Foreground="White"
-               FontSize="72" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Visibility="Hidden" FontFamily="Bahnschrift SemiBold SemiCondensed">
-            <Label.Content>
-                <AccessText TextWrapping="Wrap" Text="HULL INTEGRITY COMPROMISED. &#10;&#10; EVACUATE NOW." TextAlignment="Center"/>
-            </Label.Content>
-        </Label>
         <Button Name="toggleAlarmButton" HorizontalAlignment="Left" Margin="700,23,0,0" VerticalAlignment="Top" Visibility="Visible" Click="toggleAlarmButton_Click" Grid.Column="1">
             <TextBox Name="toggleAlarmText" HorizontalAlignment="Left" Text="MASK ALARM" Width="70" TextWrapping="Wrap" HorizontalContentAlignment="Center" FontFamily="Bahnschrift SemiBold SemiCondensed" FontSize="15" IsHitTestVisible="False" Background="{x:Null}" BorderBrush="{x:Null}" />
         </Button>
+        <Label x:Name="evacuateText" HorizontalAlignment="Center" Height="550" Margin="0,0,0,0" VerticalAlignment="Center" Width="750" Background="DarkRed" Foreground="White"
+               FontSize="72" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Visibility="Hidden" FontFamily="Bahnschrift SemiBold SemiCondensed">
+            <AccessText TextWrapping="Wrap" Text="HULL INTEGRITY COMPROMISED. &#xA;&#xA; EVACUATE NOW." TextAlignment="Center"/>
+        </Label>
     </Grid>
 </Window>
