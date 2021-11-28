@@ -494,7 +494,7 @@ namespace CrewDragonHMI
                     this.Dispatcher.Invoke(() =>
                     {
                         speedSlider.Value = speedSlider.Maximum;
-                        speedText.Text = "Speed: LIGHT SPEED";
+                        speedText.Text = "SPEED: LIGHT SPEED";
                     });
                 }
                 else

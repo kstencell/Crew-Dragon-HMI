@@ -38,10 +38,10 @@
         <TextBox Name="speedText" 
                  HorizontalAlignment="Left" 
                  VerticalAlignment="Top"
-                 Margin="532,330,0,0" 
+                 Margin="520,330,0,0" 
                  Text="SPEED: 0 KM/S" 
                  TextWrapping="Wrap" 
-                 Width="258" Height="36"  Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Normal" FontSize="32" FontFamily="Bahnschrift SemiBold SemiCondensed" TextAlignment="Left" IsReadOnly="True" IsInactiveSelectionHighlightEnabled="True" AllowDrop="False" Focusable="False" IsHitTestVisible="False" IsTabStop="False"/>
+                 Width="270" Height="36"  Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Normal" FontSize="32" FontFamily="Bahnschrift SemiBold SemiCondensed" TextAlignment="Left" IsReadOnly="True" IsInactiveSelectionHighlightEnabled="True" AllowDrop="False" Focusable="False" IsHitTestVisible="False" IsTabStop="False"/>
         <Slider Name="speedSlider"
                 Orientation="Vertical"
                 HorizontalAlignment="Left" 
