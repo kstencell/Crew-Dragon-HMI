@@ -1,4 +1,8 @@
-﻿using System;
+﻿
+// Release v.1.0
+
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -229,7 +233,7 @@ namespace CrewDragonHMI
             this.Dispatcher.Invoke(() =>
             {
                 alarm.Background = Brushes.Gray;
-                alarmText.Foreground = Brushes.Black;
+                alarmText.Foreground = Brushes.White;
             });
         }
 
@@ -264,7 +268,7 @@ namespace CrewDragonHMI
 
                         this.Dispatcher.Invoke(() =>
                         {
-                            alarmText.Content = "SHIP STATUS: ALERT";
+                            alarmText.Content = "SHIP STATUS: CRITICAL"; //changed this to sound more sci fi
                             
                             if ((bool) alarm.IsChecked)
                             {
@@ -281,7 +285,7 @@ namespace CrewDragonHMI
                     {
                         alarm.IsEnabled = false;
                         alarm.IsChecked = true; // Reset "snooze"
-                        alarm.Background = Brushes.Green;
+                        alarm.Background = Brushes.Gray;
 
                         alarmText.Content = "SHIP STATUS: FUNCTIONAL";
                         alarmText.Foreground = Brushes.White;
@@ -481,6 +485,7 @@ namespace CrewDragonHMI
             {
                 MovementModule.toggleWarpDrive();
                 BW_warpDrive.RunWorkerAsync();
+                speedSlider.IsEnabled = false;
             }
         }
 
@@ -494,6 +499,7 @@ namespace CrewDragonHMI
                 {
                     speedSlider.Value = MovementModule.getSpeed();
                     speedText.Text = "SPEED: " + (int)speedSlider.Value + " KM/S";
+                    speedSlider.IsEnabled = true;
                 });
 
             }
