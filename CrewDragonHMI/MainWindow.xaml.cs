@@ -237,6 +237,38 @@ namespace CrewDragonHMI
             });
         }
 
+        private void toggleAlarmButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Dispatcher.Invoke(() =>
+            {
+                if ((bool)alarm.IsChecked)
+                {
+                    alarm.IsChecked = false;
+                    toggleAlarmText.Text = "HIGHLIGHT ALARM";
+                }
+                else
+                {
+                    alarm.IsChecked = true;
+                    toggleAlarmText.Text = "MASK ALARM";
+                }
+            });
+        }
+
+        private void alarm_PopOut ()
+        {
+            Dispatcher.Invoke(() =>
+            {
+                alarm.BorderThickness = new Thickness(1.0,1.0,2.0,2.0);
+            });
+        }
+
+        private void alarm_PopIn()
+        {
+            Dispatcher.Invoke(() =>
+            {
+                alarm.BorderThickness = new Thickness(1.0, 1.0, 2.0, 2.0);
+            });
+        }
 
 
         private void Alert_DoWork(object sender, DoWorkEventArgs e)
@@ -261,29 +293,28 @@ namespace CrewDragonHMI
                 {
                     if (isOnAlert)
                     {
-                        if (!alarm.IsEnabled) // Enable dismissal if possible
-                        {
-                            alarm.IsEnabled = true;
-                        }
 
                         this.Dispatcher.Invoke(() =>
                         {
                             alarmText.Content = "SHIP STATUS: CRITICAL"; //changed this to sound more sci fi
-                            
-                            if ((bool) alarm.IsChecked)
+
+                            if ((bool)alarm.IsChecked)
                             {
                                 alarm.Background = Brushes.Red;
+
                             }
                             else
                             {
                                 alarm.Background = Brushes.Gray;
                             }
-                            
+
+                            toggleAlarmButton.Visibility = Visibility.Visible;
+
                         });
                     }
                     else
                     {
-                        alarm.IsEnabled = false;
+                        toggleAlarmButton.Visibility = Visibility.Hidden;
                         alarm.IsChecked = true; // Reset "snooze"
                         alarm.Background = Brushes.Green;
 
