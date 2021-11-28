@@ -349,6 +349,24 @@ namespace CrewDragonHMI
                 }
                 System.Threading.Thread.Sleep(1000);
             }
+            
+            for (int numFlashes = 5; numFlashes > 0; numFlashes--)
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    evacuateText.Visibility = Visibility.Visible;
+                });
+
+                System.Threading.Thread.Sleep(2000);
+
+                this.Dispatcher.Invoke(() =>
+                {
+                    evacuateText.Visibility = Visibility.Hidden;
+                });
+
+                System.Threading.Thread.Sleep(1000);
+            }
+           
 
             Environment.Exit(0);
         }
