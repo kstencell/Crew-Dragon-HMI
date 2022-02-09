@@ -8,4 +8,6 @@ This program utilizes the C# library Background Workers to provide multi-threadi
 
 # Preview
 
-![ezgif com-gif-maker](https://user-images.githubusercontent.com/71084029/153097901-011abce3-cb2f-499f-9667-8ca05dd9d444.gif)
+<p align=center>
+  <img src="https://user-images.githubusercontent.com/71084029/153097901-011abce3-cb2f-499f-9667-8ca05dd9d444.gif">
+</p>
